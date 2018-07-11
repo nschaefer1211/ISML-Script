@@ -1,0 +1,2037 @@
+\documentclass[11pt,a4paper,numbers=endperiod]{scrartcl}
+
+\usepackage[ngerman]{babel}			
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage{ulem}
+\usepackage{setspace}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{bbm}
+\usepackage{sectsty}
+\sectionfont{\clearpage}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{amsmath,listings}
+\usepackage{bigdelim}
+\usepackage{arydshln}
+\usepackage{lscape}
+\usepackage{amsmath}
+\usepackage{amssymb}			
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{pstricks,pst-plot}
+\usepackage{pst-node}
+\usepackage{pstricks,pst-plot,pst-node}
+\SpecialCoor
+\usepackage{nicefrac}
+\usepackage{tikz, forest}
+\usetikzlibrary{matrix}
+\usetikzlibrary{fit}
+\usetikzlibrary{backgrounds}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows.meta}
+\graphicspath{{C:/Users/Nikolaus/Pictures/}} 
+
+\setkomafont{sectioning}{\rmfamily\bfseries} 
+\setlength\parindent{0pt}
+
+\forestset{
+	.style={
+		for tree={
+			base=bottom,
+			child anchor=north,
+			align=center,
+			s sep+=1cm,
+			straight edge/.style={
+				edge path={\noexpand\path[\forestoption{edge},thick,-{Latex}] 
+					(!u.parent anchor) -- (.child anchor);}
+			},
+			if n children={0}
+			{tier=word, draw, thick, rectangle}
+			{draw, diamond, thick, aspect=2},
+			if n=1{%
+				edge path={\noexpand\path[\forestoption{edge},thick,-{Latex}] 
+					(!u.parent anchor) -| (.child anchor) node[pos=.2, above] {Y};}
+			}{
+				edge path={\noexpand\path[\forestoption{edge},thick,-{Latex}] 
+					(!u.parent anchor) -| (.child anchor) node[pos=.2, above] {N};}
+			}
+		}
+	}
+}
+
+
+\newcommand{\id}{\hspace*{4mm}}
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\logit}{\text{logit}}
+\newcommand{\tit}[1]{\begin{large} \underline{\text{#1}}\end{large}}
+\titleformat*{\paragraph}{\large\bfseries}
+
+
+
+
+\def\QQ{{\mathbb Q}}
+\def\CC{{\mathbb C}}
+\def\RR{{\mathbb R}}
+\def\NN{{\mathbb N}}
+\def\ZZ{{\mathbb Z}}
+\def\PP{{\mathbb P}}
+\def\FF{{\mathbb F}}
+
+
+\def\Namen{} % Namen eintragen
+\def\Datum{} % Datum eintragen
+\def\Titel{} % Vortragstitel eintragen
+% Die Titelzeilen werden aus diesen Angaben automatisch erzeugt.
+\begin{document}
+	\Namen \hfill \Datum\par
+	\vspace{0.25\baselineskip}
+	\hrule
+	\vspace{\baselineskip}
+	\begin{center}
+		{\LARGE\textbf{Introduction to Statistical Machine Learning}}\par
+		\vspace{0.25\baselineskip}
+		{\large\textsc{Uni Heidelberg}}
+	\end{center}
+	\hrule 
+	
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	
+	
+	
+	
+	\begin{center}
+		{\large\itshape Erstellt von: Nikolaus Schäfer}
+	\end{center}
+	
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	
+	\begin{center}
+		{\large Dozent: Junprof. Dr. F. Krüger}
+	\end{center}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	\vspace{\baselineskip}
+	
+	\begin{center}
+		{\large \text{\today}}
+	\end{center}
+	
+	\newpage
+	\vspace{0.125\baselineskip}
+	\tableofcontents %Inhaltsverzeichnis (wird automatisch erzeugt
+	\newpage
+	\section{Lecture April 18th}
+	\vspace{0.2\baselineskip}
+	
+	\onehalfspacing
+
+\paragraph{What is Statistical Learning? (2.1)}
+$ $\\
+
+\tit{Example:} Advertising Data
+	\begin{itemize}[label={--}]
+		\item Sales of a product in 200 different markets
+		\item Budget for advertising in each maket for three channels: TV, radio, newspaper.
+		\item Question: Which advertising channel increaes sales (by how much?)
+	\end{itemize}
+In this example, $\underbrace{\text{sales}}_{Y}$ is the \textbf{output variable} (Y), advertising budgets are \textbf{input variables} ($X_1$: TV Budget, $X_2$: radio budget, $X_3$: newspaper budget) 
+
+
+\underline{Synonomys}: input variable = predicators, regressors, features, independent variables\\
+\hspace*{17.2mm} output variable = response variable, predictand, dependent variable
+
+\underline{More generally}: Response $Y$ (quantitative, i.e. continuous number), $p$ predicators $X_1, \ldots, X_p$.\\
+\id Aim: Study relationship betwenn $Y$ and $X = (X_1, \ldots, X_p)$.
+\begin{align*}
+	\textbf{Assuption: } Y = f(X) + \epsilon
+\end{align*} 
+when
+\begin{itemize}[label={--}]
+	\item $f$ is a fixed but unknown function of $X_1, \ldots, X_p$
+	\item $\epsilon$ is a random error term, independent of $X$, with $E(\epsilon) = 0$
+\end{itemize}
+$\Rightarrow f$ represents systematic information that $X$ provides about $Y$
+
+\paragraph{ Why estimate $f$? (2.1.1)}
+$ $\\
+
+Two motivations: Prediction and inference\\
+
+\textbf{\tit{Prediction:}}\\
+Predict $Y$ using $X$, i.e. $\hat{Y} = \hat{f}(X)$ 
+
+\id Main goal: Accurate prediction, i.e. $\hat{Y}$ as close as possible to $\hat{f}(X)$ (see Section 2.2 below)\\
+
+\tit{Example}: Predict next quarters GDP growth rate, $Y$, based on $X = (X_1, \ldots, X_p)$.\\
+$X$ might include other other economic variables like current (this quarter's) GDP growth rate, inflation rate, interest rates, survey forecasts (e.g. survey of Professional Forecastors conducted by ECB).\\
+
+Two sources of error: $\underset{\text{(RE)}}{\textbf{Reducible error}}$ and $\underset{\text{(IE)}}{\textbf{irreducible error}}$\\
+
+\underline{RE}: Arises because $\hat{f}$ is an imperfect estimate of $f$ $\Rightarrow$ Can be reduced by using the most appropriate statistical learning technique to estimate $f$\\
+
+\underline{IE}: Arises because $\epsilon$ is there and, by definition, cannot be predicted using $X$. In other words, $IE$ would still be there if we had a perfect estimate of $f$ (such that $\hat{f}(X) = f(X)$).\\
+
+Main reason for existence of $\epsilon$: Do not/can not measure all variables $X$ that are relevant for $Y$. (for legal, technical, or ethical reasons)
+
+\tit{Example:}
+\begin{eqnarray*}
+ Y &=& \text{Price of a house}\\
+ X &=& \text{information on location, number of rooms, size of the property}
+\end{eqnarray*}
+Possible factors that go into $\epsilon$: Neighbors, urgent sales, psychological factors .\\
+
+\section{Lecture April 19th}
+
+\begin{eqnarray*}
+Y &=& f(X) + \epsilon \hspace*{5mm} \text{model}\\
+\hat{Y} &=& \hat{f}(X) \hspace{7mm} \text{forecast}
+\end{eqnarray*}
+
+\underline{Reducible error}: Results from having poor estimate $\hat{f}$ of $f$\\
+\underline{Irreducible error}: Factors in $\epsilon$ are unobservable.\\
+
+\tit{Example:} Predict children's income form parents' income.
+\begin{align*}
+	\underbrace{Y}_{\text{child income}} = f(\underbrace{X}_{\text{information on parent income}}) + \overbrace{\epsilon}^{\text{variables that are unrelated to parents income}}\\
+\end{align*}
+
+\begin{eqnarray*}
+E\{(Y-\hat{Y})^2\} &=& E\{(f(X) + \epsilon - \hat{f}(X))^2\} = E\{(f(X) - \hat{f}(X)+ \epsilon)^2\} \hspace*{4mm}\text{Note: Assume that X is} \\
+\hspace*{20.5 mm} &=& \underbrace{(f(X)- \hat{f}(X))^2}_{\text{reducible error}} + \underbrace{E(\epsilon^2)}_{V(\epsilon)} + (f(X) - \hat{f}(X)) \underbrace{E(\epsilon)}_{= 0} \hspace*{10mm} \text{fixed (no random variable)}
+\end{eqnarray*}
+This class: Focus on techniques for estimating $f$, with the aim to minimize the reducible error.\\
+
+\textbf{\tit{Inference}}
+
+Main question: How is $Y$ affected if $X_1, \ldots, X_p$ change?\\
+Need to know/estimate precise structure of $f$ to understand the relation between $X$ and $Y$.\\
+
+Specific inference questions:
+\begin{itemize}[label={--}]
+	\item Which predictors are associated with $Y$?
+	\item What's the specific form of the relation between $Y$ and $X_1$ (e.g. linear, quadratic, logarithmic, positive, negative,...)
+\end{itemize}
+
+\tit{Example}: Clinical trial where a random subgroup of patients gets a drug (treatment group), all others receive a placebo (control group). Based on such data, one can study the relation between a patient's health and whether the patient got the drug (yes/no).\\
+
+Examples on prediction vs. inference (Einav + Levin, 2014)
+
+\underline{Prediction}: 
+\begin{itemize}[label={--}]
+	\item Predict children's wealth from parents' wealth
+	\item Predict whether a user will click on an add
+\end{itemize}
+
+\underline{Inference}:
+\begin{itemize}[label={--}]
+	\item Ask whether taking online classes increases wage
+	\item Evaluate long-run effects of teachers
+\end{itemize}
+
+In some examples, both prediction and inference may be of interest. E.g. $Y$ = value of house, $X$ = features\\
+
+\indent \underline{Prediction}: E.g. realtor/salesperson want to predict value of house as it is.\\
+\indent \underline{Inference}: Find variable that affect house price (in order to maximize value given resources)
+
+\paragraph{How do we estimate $f$? (2.1.2)}
+$ $\\ 
+
+The data set, that is used to estimate $f$ is called \textbf{training data}, given by $n$ observations. Let $y_i$ denote the oberserved response for obersvation $i = 1, \ldots, n$ and $x_{ij}$ the value for observation $i$ and predictor $j = 1, \ldots p$.\\
+We denote $x_i= (x_{i1}, \ldots, x_{ip})^T$, so that our training data set consists of $\{(x_1, y_1), \ldots, (x_n, y_n)\}$\\
+
+Based on the training data, we aim to estimate $f$ such that $\hat{f}(X) \approx Y$ for any observation $(X, Y)$. Two categories of estimation: Parametric and nonparametric.\\
+
+\textbf{\tit{Parametric methods}}  
+
+Two steps:
+\begin{enumerate}
+	\item Make an assumption about the functional form of $f$, e.g. the linear model assumes that $Y$ is a linear function of $X$: $f(X) = \beta_0 + \beta_1X_1 + \ldots \beta_p X_p$
+	\item After the form  of $f$ has been selected: Use training data to estimate (or fit) the model. E.g in the linear model we would estimate the coefficients $(\beta_0, \ldots, \beta_p)$ using ordinary least squares. For nonlinear models, maximum likelihood is a popular estimation method. 
+\end{enumerate}
+
+How to choose $f$ in step 1? Simple form (such as linear model) is easy to estimate, both imposes strong assumptions on the data. E.g.
+\begin{eqnarray*}
+	Y &=& \text{wage}\\
+	X_1 &=& \text{experience}, \hspace{3mm} X_2 = \text{gender} (\text{1 if female, 0 if male})\\
+	Y &=& \beta_0 + \beta_1X_1 + \beta_2 X_2
+\end{eqnarray*}
+
+\begin{center}
+	\includegraphics[scale=0.55]{Graph1}
+\end{center} 
+
+Assumption in linear model: Same slope for males and females (experience to wage)
+
+Examples why this might be violated:
+\begin{itemize}[label={--}]
+	\item Females/Males might work in different jobs with different returns to experience
+	\item Discrimination against females who work part-time
+	\item Relationship could be much more complex than that (e.g. wage could depend on entire employment history, not just experience) 
+\end{itemize}
+
+Bottom line: Linear model implies restrictive assumptions. (Possible fix: interaction terms)\\
+Flexible forms of $f$ that impose less assumptions, but could lead to overfitting (fit training data very closely, but get problems for new (test) data). 
+overfitting: i.e., accidentally modeling noise in the training data.
+
+\section{Lecture April 25th}
+
+$Y = f(X) + \epsilon$\\
+
+\textbf{\tit{Parametric Estimate of $f$}}
+
+Linear model: $f(x) = \beta_0 + \beta_1 X_1 + \ldots \beta_p X_p$
+
+Linear model is linear in the parameters $\beta_{ji}$ not necessarily linear in the $X_j$'s  (e.g. may have quadratic terms or interaction terms)\\
+\begin{center}
+	\includegraphics[scale=0.7]{Graph2}
+\end{center}
+
+\textbf{\tit{Non-parametric estimate of $f$}}\\
+Try to learn the form of $f$ from the training data.\\
+\id \underline{pro:} Avoids risk of misspecifying $f$\\
+ \id \underline{contra:} Estimating the entire form of $f$ is ambitious, and typically requires many data points \id (i.e. large training sample)\\
+
+\tit{Question:} Why not always choose the most flexible model that's available? (see section 2.1.3)
+\underline{Inference:} Some of the very flexible models (e.g. Bagging) are hard to interpret, i.e. reveal little about the structure of the data. This leads to a trade-off between a model's flexibility and interpretability (see Figure 2.7)\\
+
+\underline{Subset selection lasso:} Take small set of variables from a large linear model\\
+not very flexible but very interpretable\\
+\rotatebox[origin=c]{180}{$\Lsh$} results are easy to interpret, because they choose the relevant variables from the data set.\\
+
+\underline{Least squares:} Tradeoff: more flexibility $\Rightarrow$ less interpretable\\
+Which models to choose depends on the data set and what models should ''show''\\
+
+\underline{Prediction:} Choosing a very flexible model may be a bad idea due to overfitting\\
+
+\paragraph{Supervised vs. unsupervised learning (2.1.4)}
+$ $\\
+
+\textbf{\tit{Supervised learning:}}\\
+We have data on repsonse $y_i$ and parameters $x_i$ (e.g. linear regression, logistic regression, regression trees etc.)\\ 
+\id Goal: Learn relationship between $Y$ and $X$\\
+\id Terminology: Response $Y_i$ 'supervises' the learning process (clear what the 'correct' answer \id should be)\\
+
+\textbf{\tit{Unsupervised learning:}}\\
+We have data on $X_i$ but no respone $Y_i$\\
+\id Popular tool: Determine dusters of similar observations in terms of $X_i$ (Figure 2.8)\\
+
+\tit{Example:} Identifying different groups of customers.\\
+\id \rotatebox[origin=c]{180}{$\Lsh$} This class: We'll only look at supervised learning.\\
+
+\paragraph{Regression vs. classification (2.1.5)}
+$ $\\
+
+\textbf{Quantitative} variables take on numerical values, e.g.: response time in classroom, price of a house or stock\\
+\textbf{Qualitative} variables belong to one out of the $K$ classes, e.g.: categorical measure of student participation (low/medium/high), information on stock going up or down.\\
+
+Problems with a quantitative response are called regression problems.\\
+Problems with a qualitative response are called classification models.
+
+\underline{Notes:} \begin{enumerate}
+	\item Whether predictors are quantitative or qualitative is usually not important
+	\item Sometomes we convert a (numerical) probability into a classifier, so distinction between regression and classification may be blurry (e.g. logistic regression)
+\end{enumerate}
+
+\paragraph{Assessing model accuracy (2.2)}
+$ $\\
+
+\tit{Question:} Many models/data sources around, which one to choose?\\
+
+For a quantitative response, mean squared error (MSE) is the most common measure: \begin{align}
+	\text{MSE} = \frac{1}{n} \sum\limits_{i = 1}^n (y_i - \hat{f}(x_i))^2, \label{Eq. 1}
+\end{align}
+where, $y_i =$ realization $\hat{f}(x_i) =$ its prediction\\
+$\Rightarrow$ smaller MSE corresponds to better model.\\
+Note that MSE in (\ref*{Eq. 1}) is computed from training data $i = 1, \ldots, n$\\
+But in practice, we want to know, how our method performs for a new, previously unseen test observation $(x_0, y_0)$ that was not used for estimating our method. That is, we are interested in the \textbf{test MSE} given by \begin{align}
+	E(y_0 - \hat{f}(x_0))^2 \label{Eq. 2}
+\end{align}
+
+\underline{Note:} We test $y_0$ as a random variable but $x_0$ is fixed\\
+\id \rotatebox[origin=c]{180}{$\Lsh$} We know characteristics ($x_0$) of new test observations, but not the outcome ($y_0$). \\ 
+
+\tit{How to estimate test MSE in (\ref*{Eq. 2})?} \begin{itemize}[label={--}]
+	\item Use part of the data as test data
+	\item What if there is not enough data to have a test sample?\\
+	\id !!! Never use training MSE as an estimate of test MSE!!! 
+	\item Many (all) methods can be tuned to have a small training MSE, but this does not imply a small test MSE (danger of overfitting (see Fig. 2.9)) 
+	\id Green line left image: most flexible matching points too close by: sign of overfitting\\
+	\id Right image: one of the two curves is training MSE (lower line). Test MSE is the red line.
+\end{itemize}
+
+\tit{Why is the training MSE lower than test MSE?}
+\begin{itemize}[label={--}]
+	\item model can be fitted mechanically to minimize training MSE
+	\item time series data: training MSE (past), test MSE (future).\\
+	\id easier to depict past than future
+\end{itemize}
+
+\newpage
+\section{Lecture May 2nd}
+
+\underline{Figure 2.9:} (In the slides)\\
+(1) Left panel
+\begin{itemize}[label={--}]
+	\item Black curve is $f(x)$, the model from which the data was simulated
+	\item Orange line, shows linear regression (rather inflexible, misses a lot of structure in data, i.e. 'underfitting')
+	\item Green curve is a very model called spline (wiggly, 'overfitting')
+	\item Blue curve is a moderately flexible spline variant (just right, closest to the true curve)
+\end{itemize}
+
+(2) Right panel
+\begin{itemize}[label={--}]
+	\item Plot shows training and test MSE as a function of the method's flexibility
+	\item Flexibility is measured as degrees of freedom (more degrees of freedom $\Leftrightarrow$ more flexible; Degrees of freedom = $\#$ parameters for linear model) 
+	\item Training MSE decreases as model becomes more flexible
+	\item Test MSE is U-shaped 
+\end{itemize}
+
+\tit{Why does overfitting occur?} 
+\begin{itemize}[label={--}]
+	\item Statistical learning methods pick up both signal and noise
+	\item If a method is too flexible, it picks up a lot of noise from the training data
+	\item Test data are different (different noise or $\epsilon$ values than the training data), leading to high test MSE
+\end{itemize}
+
+\tit{Ways to find 'best' model in terms of test MSE}
+\begin{itemize}[label={--}]
+	\item Test data (reserve part of the sample as test data)
+	\item Cross validation (later in the course)
+	\item Information criteria (later in the course)
+\end{itemize}
+
+\textbf{\tit{Parable of Google Flu}}\\
+
+GFT = Google Flu Trends\\
+Idea of GFT: Construct early warning indicatior of flu prevalence (Def: how often sth. occurs) based on search queries. $\rightsquigarrow$ important information, allows policy-makers to organize health policies, or shift resources from less to more affected states, etc.\\
+
+GFT specification:\\
+
+$\logit(\underbrace{I_t}_{\substack{\text{share of doctor visits related}\\ \text{to the flu, released by}\\ \text{CDC (official health body in the US)}}}) = \alpha \cdot \logit(\underbrace{Q_t}_{\text{share of flu-related search queries}}) + \epsilon_t$ \hspace*{4mm} ($t$ denotes time)\\
+
+$\logit(p) = \ln(p) - \ln(1-p):$\id$(0,1) \Rightarrow \RR$ (basically for modeling convenience) \\
+
+\tit{Question:} How to define $Q_t$? Based on (1) List/ranking of all search terms, (2) Choose amount of seach terms to include (Ginsberg et. al, Figure 1)\\
+Some efforts to drop seasonal (but not flu-related) terms like college basketball, Oscar nominations.\\
+\rotatebox[origin=c]{180}{$\Lsh$} Critique by Lazer et al (2014): Procedure not transparent, list of search terms not published\\
+
+\tit{Is overfitting a big concern?} 
+\begin{itemize}[label={--}]
+	\item No, in the sense that the model is small (one regressor only)
+	\item Yes, in the sense that there are many possible regressors (> 50 million search terms, choose list of $k$ terms, $k \in \{1, \ldots, 50.000.0000\}$) \\
+	$\rightsquigarrow$ Have to choose between billions of possible specifications
+\end{itemize}
+
+\tit{What went wrong?}\\
+Lazer et al, Figure 2: GFT prediction clearly and consistently overpredicts the CDC data.\\
+Most likely explanation: Changes in the search engine algorithm, which led to increase in the $Q_t$ variable, which had no substantive reason.\\
+$\rightsquigarrow$ Quite complex, result of both search engine technology and user behavior.\\
+
+\tit{Criticism by Lazer et al (2014):} 
+\begin{itemize}[label={--}]
+	\item GFT performance not too great to begin with
+	\begin{itemize}
+		\item CDC data fairly easy to predict from past, CDC data and seasonal information
+		\item GFT predictions should have been compared to such a benchmark method
+	\end{itemize}
+	\item Changes in $Q_t$ were not incorporated/were hard to incorporate
+\end{itemize}
+$\rightsquigarrow$ 'Big data habris': Data can do magic just because of a large sample\\
+\hspace*{4.5mm} $\rightsquigarrow$ Need to understand why a model works (substantive or statistical basis for the model's success)\\
+
+\section{Lecture May 3rd}
+
+\paragraph{The bias variance trade-off (2.2.2)}
+$ $\\
+
+When plotting a method's test sample MSE as a function of the method's complexity, we typically get a U-shaped pattern:(see figure 2.9 right panel)\\
+Sketch: 
+\begin{center}
+	\includegraphics[scale=0.7]{Graph3}
+\end{center}
+
+$\rightsquigarrow$ This pattern can be explained by two competing properties of statistical learning methods: Bias and variance.
+\begin{align*}
+	E \{(y_0 - \hat{f}(x_0))^2\} = E\{(f(x_0) + \epsilon - \hat{f}(x_0))^2\} = E \{(f(x_0) - E(\hat{f}(x_0)) + E(\hat{f}(x_0)) + \epsilon - \hat{f}(x_0))^2\} \hspace*{17mm}\\ 
+	= E(\epsilon^2) + E\{(f(x_0) - E(\hat{f}(x_0)) + E(\hat{f}(x_0)) - \hat{f}(x_0))^2\} \hspace*{78.3mm}\\
+	 = \underbrace{E(\epsilon^2)}_{A} + \underbrace{E\{(f(x_0) - E(\hat{f}(x_0)))^2\}}_{B} + \underbrace{E\{(E(\hat{f}(x_0) - \hat{f}(x_0)))^2\}}_{C}  + \underbrace{2E\{(f(x_0) - E(\hat{f}(x_0))) (E(\hat{f}(x_0)) - \hat{f}(x_0))\}}_{D}
+\end{align*}
+$\epsilon$ is part of the test sample $\Leftrightarrow$ independent of $\hat{f}(x_0)$ (part of the training sample)\\
+
+$D = 2E\{(f(x_0) - E(\hat{f}(x_0))) (E(\hat{f}(x_0)) - \hat{f}(x_0))\} = 2E\{(f(x_0) - \hat{f}(x_0)) \underbrace{(\hat{f}(x_0) - \hat{f}(x_0))}_{=0}\} = 0$\\
+$A = Var(\epsilon) \geq 0$\\
+$B = E\{(\underbrace{f(x_0)}_{\text{optimal prediction}} - \underbrace{E(\hat{f}(x_0))}_{\text{expected value of prediction}})^2\} =$ Bias of $\hat{f}(x_0) \geq 0$\\
+
+$C = E\{(E(\hat{f}(x_0) - \hat{f}(x_0))^2\} = Var \{\hat{f}(x_0)\} \geq 0$\\
+
+Three components of expected test MSE\\
+(1) \textbf{Var$(\epsilon)$} $\rightsquigarrow$ irreducible error, cannot do anything about this one $\rightsquigarrow$ Measure of difficulty of prediction problem\\
+(2) \textbf{Bias of $\hat{f}(x_0):$} Expresses the error that we make by approximating a (possibly) complex real-life problem with a statistical model. E.g. when the true curve $f$ is nonlinear, then linear model $\hat{f}$ will always lead to a biased estimate (even if we had a huge training data set).\\
+$\rightsquigarrow$ In general, more flexible models will have smaller bias.\\
+Intuition: Flexible methods can produce various curves $f$ (e.g. linear or nonlinear, smooth or rough), depending on the data. 
+
+(3) \textbf{Variance of $\hat{f}(x_0)$:} Expresses how much $\hat{f}$ would change if we used a different training data set to estimate $\hat{f}$. If $Var \{\hat{f}(x_0)\}$ is high, this means that the SL method is fragile (small changes in training data can lead to large changes in $\hat{f}$).\\
+$\rightsquigarrow$ in general, flexible methods tend to have higher variance. \\
+\begin{center}
+	\includegraphics[scale=0.7]{Graph4}
+\end{center}
+
+\begin{itemize}[label={--}]
+	\item When using a more flexible method, we increase the variance but reduce the bias
+	\item Challenge is to choose the optimal compromise that minimizes test MSE
+\end{itemize}
+$\rightsquigarrow$ This challenge is called the bias-variance trade-off. 
+
+\paragraph{The classification setting (2.2.3)}
+$ $\\
+
+$\rightsquigarrow$ concepts like Bias to Variance Tradeoff transfrer classification setting, but we need some modification since $y_i$ is now qualitative.\\
+
+Suppose we seek to estimate $f$ based on a training observations $\{(x_1, y_1), \ldots, (x_n, y_n)\}$, where the $y_i$'s are now qualitative.\\
+\underline{Training error rate} is defined as 
+\begin{align*}
+	\frac{1}{n} \sum\limits_{i =1}^n \mathbbm{1}(y_i \neq \hat{y}_i)
+\end{align*}
+where $\hat{y_i}$ is the predicted class label for observation $i$, based on $\hat{f}(x_i)$. Furthermore, 
+\begin{align*}
+	\mathbbm{1}(y_i \neq \hat{y}_i) = \begin{cases}
+		1 \text{ if } y_i \neq \hat{y_i} \text{  (i.e. wrong classification)}\\
+		0 \text{ if } y_i = \hat{y_i} \text{ (i.e., correct classification)}
+		\end{cases}
+\end{align*}
+Training error rate gives traction of wrong classifications. As in the regression setting, we are most interested in the test sample performance of a SL method. The latter is captured by the test error rate, which for a new observation $(x_0, y_0)$, is given by
+\begin{align*}
+	P(y_0 = \hat{y_0}), 
+\end{align*}
+i.e the probability that the SL method gives a wrong classification of the new observation.\\ $\rightsquigarrow$ should be as small as possible. 
+\newpage
+\section{Lecture May 9th} 
+
+Measures of (test sample) error:\\
+\hspace*{5mm} Mean (expected) squared error \begin{align*}
+	E (y_0 - \hat{f} (x_0))^2 \hspace*{10 mm} \text{numerical/continuous response} 
+\end{align*}
+\hspace*{5mm} $(\underbrace{x_0}_{\text{known}}, \underbrace{y_0}_{\text{unknown}})$ is a new data point that's not used for model fitting.\\
+
+\hspace*{5mm} Probability of false classification: \begin{align}
+	\hspace*{4mm} P(y_0 \neq \hat{y}_0), \hspace*{8mm} \text{qualitative response (classification)} \label{Eq. 3}
+\end{align}
+
+\hspace*{5mm} where $y_0 \in \{0,1\}$ is the observed class label, and $\hat{y}_0 \in \{0,1\}$ is the predicted label.\\
+\hspace*{90mm} \rotatebox[origin=c]{180}{$\Lsh$} Transfers to the case of > 2 classes
+
+
+
+\textbf{\tit{Bayes classifier}}\\
+
+Can be shown: Test error rate in (\ref*{Eq. 3}) is minimized by assigning each observation to the most likely class, given its predictor values. I.e., assign test observation with predictor vector $x_0$ to the class $j$ for which \begin{align*}
+	P(Y = j| X = x_0)
+\end{align*}
+is largest. $\rightsquigarrow$ ''Bayes classifier'' (BC)\\
+If there are only two classes: Assign to class '1' if \begin{align*}
+ P(Y = 1| X = x_0) > 0.5
+\end{align*}
+
+BC produces the lowest possible error rate ('Bayes error rate'), given by \begin{align*}
+	1 - E\left(\max\limits_{j} P(Y = j|X)\right),
+\end{align*}
+this corresponds to the irreducible error in regression.\\
+
+\textbf{\tit{$K$-Nearest Neighbors}}\\
+
+Problem with the BC: Depends on the unknown true probability. $\rightsquigarrow$ Need to estimate it from training data. One approach for doing this:\\
+\textbf{$K$-nearest neighbors (KNN)} classifier.\\
+
+\underline{Idea:} Find $K$ points in the training data that are closest to $x_0$.\\
+Denote this set as $\mathcal{N}_0$. Then let \begin{align*}
+	\hat{P}(Y = j| X = x_0) = \frac{1}{k} \sum\limits_{i \in \mathcal{N}_0} \mathbbm{1}(y_i = j),
+\end{align*}
+i.e. the fraction of neighbors that belong to class $j$.
+
+\tit{Example:} Figure 2.14
+\begin{itemize}[label={--}]
+	\item Training data given by six blue and six orange observations
+	\item $x_0$ marked by black cross
+	\item  Example: $k = 3$ $\rightsquigarrow$ Three NNs shown (green circle)\begin{align*}
+		\begin{rcases*}
+		\hat{P}(Blue| X = x_0) = 2/3\\
+		\hat{P}(Orange | X = x_0) = 1/3
+		\end{rcases*} \text{Classify as blue (no weighting of neighbors)}
+	\end{align*}
+	Right panel shows KNN decision boundary
+\end{itemize}
+
+\tit{What's the role of $K$?} \begin{itemize}[label={--}]
+	\item Low value of $K$: Very flexible method $\rightsquigarrow$ Low bias, high variance\\
+	\hspace*{22mm} \rotatebox[origin=c]{180}{$\Lsh$} Decision boundary becomes wiggly (small change in $x_0$ can change class)
+	\item High value of $K$: Inflexible method $\rightsquigarrow$ High bias, low variance.\\
+	\hspace*{25mm}  \rotatebox[origin=c]{180}{$\Lsh$} Decision boundary becomes very smooth
+\end{itemize}
+
+Extreme example: $K = n$ (= \# traning observations) \begin{itemize}[label={--}]
+	\item Always predict majority class ($\mathcal{N}_0$ is the complete sample)
+\end{itemize}
+
+Low $K$ means low training error (= zero if $K = 1$)\\
+More importantly: Test error! 
+\begin{center}
+	\includegraphics[scale=0.7]{Graph5}
+\end{center}
+\underline{$K$-nearest neighbor example from the book Chapter 2 Problem 7:}\\
+
+(a) Compute euclidean distance:\\ $\begin{matrix}
+	Obs & eucl. distance & Color\\
+	1 & 3 & R\\
+	2 & 2 & R\\
+	3 & \sqrt{10} & R\\
+	4 & \sqrt{5} & G\\
+	5 & \sqrt{2} & G\\
+	6 & \sqrt{3} & R\\
+\end{matrix}$\\
+
+(b) $\hat{P}(Green| X = x_0) = 1$ for $K = 1$\\
+	use only observation 5, i.e. $\mathcal{N}_0 = \{5\}$\\
+	
+(c) $K = 3:$\\
+	$\hat{P}(Green| X = x_0) ) = 1/3$\\
+	use obserservation $2,5$ and $6$, i.e. $\mathcal{N}_0 = \{2,5,6\}$\\
+
+(d) If decision boundary is complex, need a flexible model\\
+	\rotatebox[origin=c]{180}{$\Lsh$} Small value for $K$.\\
+ 
+\section{Lecture, May 17th}
+
+\tit{\textbf{Linear regression}}\\
+
+\underline{Linear regression} is the standard approach for supervised learning with a quantitative response.\\
+\id $\rightsquigarrow$ useful starting point before discussing more complicated SL methods.\\
+
+Simplest case: One predictor variable \begin{align*}
+	Y = \beta_0 + \beta_1 X + \epsilon
+\end{align*} \begin{itemize}
+	\item $\beta_0, \beta_1$ are unknown parameters $\rightsquigarrow$ need to estimate them
+	\item Prediction: $\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 X$
+\end{itemize}
+\tit{Example:}\id $X$ = education (years of schooling), $Y$ = Income (Euros)\\
+$\rightsquigarrow$ Prediction $\hat{Y}$ is a linear function of $X$\\
+
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph6}
+\end{align*}
+
+\newpage
+\paragraph{Estimating the coeffictions (3.1.1)}
+$ $\\
+
+Training data $(X_1, Y_1), \ldots, (X_n, Y_n)$.\\
+Goal: Find estimates $\hat{\beta}_0$, $\hat{\beta}_1$ that fit the data, i.e. such that $e_i = (y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i)$ is 'small' for $i = 1, \ldots, n$.\\
+ $\rightsquigarrow e_i$ is the residual (difference between observation and prediction) for case $i$.\\
+Residual sum of squares (RSS) is given by \begin{align*}
+	\text{RSS} = e_1^2 + e_2^2 + \ldots + e_n^2
+\end{align*}
+Which estimates $(\hat{\beta}_0, \hat{\beta}_1)$ minimize RSS?\\
+
+Optimization problem: \begin{align*}
+	\min\limits_{b_0, b_1} \text{ RSS} = \sum\limits_{i = 1}^n (Y_i - b_0 - b_1 X_i)^2 \equiv \text{RSS } (b_0, b_1)
+\end{align*}
+Note, that $b_0$ and $b_1$ are estimators for $\beta_0$ and $\beta_1$ respectively. Solving the problem: 
+\begin{eqnarray*}
+	\frac{\dif \text{RSS}(b_0, b_1)}{\dif b_0} &=& -2 \sum\limits_{i = 1}^n (Y_i - b_0 - b_1 X_i) \overset{!}{=} 0\\
+	\Leftrightarrow \id \id \underbrace{\sum\limits_{i = 1}^n Y_i}_{\equiv n \overline{Y}} &\overset{!}{=}& n b_0 + b_1 \underbrace{\sum\limits_{i = 1}^n X_i}_{= n \overline{X}}\\
+	\Leftrightarrow \id \id \id  \hat{\beta}_0 &=& \overline{Y} - \hat{\beta}_1 \overline{X}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+	\frac{\dif RSS(b_0, b_1)}{\dif b_1} &=& -2 \sum\limits_{i = 1}^n X_i (Y_i - b_0 - b_1 X_i)\overset{!}{=} 0\\
+	\Leftrightarrow \id \sum\limits_{i = 1}^n X_i Y_i &=& b_0  \sum\limits_{i = 1}^n X_i + b_1 \sum\limits_{i = 1}^n (X_i)^2\\
+\end{eqnarray*}
+{plug in $\hat{\beta}_0$
+\begin{eqnarray*}
+	\sum\limits_{i = 1}^n X_i Y_i &=& (\overline{Y} - \hat{\beta}_1 \overline{X}) n \overline{X} +  \hat{\beta}_1 \sum\limits_{i = 1}^n (X_i)^2 = n \overline{X} \overline{Y} + \hat{\beta}_1 (\sum\limits_{i = 1}^n (X_i)^2 - n \overline{X}^2)\\
+	\Leftrightarrow \id \underbrace{\frac{1}{n} \sum\limits_{i = 1}^n X_iY_i - \overline{X} \overline{Y}}_{Cov(X_i, Y_i)} &=& \hat{\beta}_1 \underbrace{\frac{1}{n} \sum\limits_{i = 1}^n X_i^2 - \overline{X}^2)}_{Var(X_i)}\\
+	\Leftrightarrow \id \hat{\beta}_1 &=& \frac{\frac{1}{n} \sum\limits_{i = 1}^n X_i Y_i - \overline{X} \overline{Y}}{\frac{1}{n} \sum\limits_{i = 1}^n (X_i^2 - \overline{X}^2)}
+\end{eqnarray*}
+
+\begin{itemize}
+	\item Estimate $\hat{\beta}_1$ is positive whenever there's a positive correlation between $X_i$ and $Y_i$ in the sample.
+	\item Average residual given by \begin{align*}
+		\frac{1}{n} \sum\limits_{i = 1}^n e_i = \frac{1}{n} \sum\limits_{i = 1}^n (Y_i - (\underbrace{\overline{Y} - \hat{\beta}_1 \overline{X}_i}_{= \hat{\beta}_0}) - \hat{\beta}_1 X_i) = \frac{1}{n} \sum\limits_{i = 1} (Y_i - \overline{Y}) = 0
+	\end{align*}
+	$\rightsquigarrow$ by construction, average residual is zero
+\end{itemize}
+$\hat{\beta}_0$, $\hat{\beta}_1$ shown above are called ordinary least squares (OLS) estimates\\
+$\rightsquigarrow$ can be shown: $E(\hat{\beta_0}) = \beta_0$, $E(\hat{\beta}_1) = \beta_1$ (i.e. estimates are unbiased)\\
+$\rightsquigarrow$ if you simulate many data sets of size $n$, then both $\hat{\beta}_0$ and $\hat{\beta}_1$ will be correct on average (great programming exercise)\\
+
+Which factors affect accuracy of OLS estimator?\\
+\id \id \rotatebox[origin=c]{180}{$\Lsh$} Ideally, want $Var(\hat{\beta}_0)$ and $Var(\hat{\beta}_1)$ to be small.\\
+This is the case if, \begin{itemize}
+	\item The sample size, $n$, is large
+	\item The error variance (of $\epsilon$), $\sigma^2$, is 
+	\item The variance of $X_i$, $Var(X_i)$, is large
+\end{itemize}
+$\rightsquigarrow$ \underline{Note:} RSS is minimized by construction, hence not a good measure of test sample performance.\\
+
+\paragraph{Multiple Linear Regression (3.2)}
+$ $\\
+
+Often want to consider more than one predictor variable \begin{align*}
+	Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_p X_p + \epsilon \id \id  \text{(p predictor variables)}
+\end{align*}
+e.g. \begin{eqnarray}
+	Y &=& \text{income}\\
+	X_1 &=& \text{years of schooling}\\
+	X_2 &=& \text{gender (e.g. 1 if female, 0 if male)}\\
+	X_3 &=& \text{job experience (in years)}\\
+	X_4 &=& \text{location1 (e.g. 1 if east, 0 if west)}\\
+	X_5 &=& \text{location2 (e.g. 1 if urban area, 0 if not)}\\
+	X_6 &=& \text{online courses (e.g. 1 if taken MOOC)}\\
+	&\vdots&
+\end{eqnarray}
+\tit{How to interpret parameters?}\\
+\id $\rightsquigarrow$ E.g., $\beta_3$? 
+\id $\rightsquigarrow$ Change in predicted income of job experience increases by one year but all other variables stay constant\\
+
+OLS estimation: \begin{align*}
+	\text{minimize}_{b_0, \ldots, b_p} \text{ RSS} = \sum\limits_{i = 1}^n (Y_i - b_0 - b_1X_{i1} - \ldots - b_p X_{ip})^2
+\end{align*}
+\id $\rightsquigarrow$ Problem can be solved using matrix Algebra\\
+\id $\rightsquigarrow$ Implemented in statistical software, e.g. R function 'lm'\\
+
+\tit{Note:} Variable may be important in simple linear regression (1 predictor) but may drop out/be irrelevant in multiple regression.\\
+E.g.: In regression of $Y$ on $X_6$ only, might find strong positive relation (but might vanish in multiple regression)\\
+
+\tit{Model fit} (i.e. how well a model matches  the data)\\
+Most popular measure: $R^2$, given by \begin{align*}
+	R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}, \id \text{TSS} = \sum\limits_{i = 1}^n (Y_i - \overline{Y})^2
+\end{align*}
+
+\tit{Properties:} \begin{itemize}
+	\item $0 \leq R^2 \leq 1$, \begin{itemize}
+		\item $RSS = 0 \Rightarrow$ training sample predictions are perfect $\Rightarrow R^2 = 1$
+		\item \text{RSS = TSS} $\Rightarrow \hat{Y}_i = \overline{Y}$, $i = 1, \ldots, n$ ($X$ variables not at all helpful for predicting $Y$) $\rightsquigarrow R^2 = 0$
+	\end{itemize} 
+	\item If you include more variables into the model, then $R^2$ increases by construction
+	\begin{itemize}
+		\item TSS stays the same
+		\item RSS goes down by construction (more degrees of freedom) 
+	\end{itemize}
+	\item Will look at better measures of model fit (e.g. adjusted $R^2$, Akaike information criterion) $\rightsquigarrow$ account for the number of predictors $p$, that are used in the model
+\end{itemize}
+
+\section{Lecture May 23rd} 
+
+Linear regression model \begin{align*}
+	Y = \beta_0 + \beta_1X_1 + \ldots + \beta_p X_p + \epsilon
+\end{align*}
+$R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}$\\
+Note: OLS estimator is designed to minimize RSS $\Leftrightarrow$ maximize $R^2$. It can be shown that $R^2 = (\underbrace{Cor(Y_i, \hat{Y}_i)}_{\text{Correlation in training sample}})^2$\\
+
+Main problem with $R^2$: Increases mechanically when using more predictors.\\
+\id $\rightsquigarrow$ We'll look at better ways to measure model fit\\
+
+\tit{Prediction in linear model}\\
+...given by $\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 X_1 + \ldots + \hat{\beta}_p X_p$\\
+\id $\neq$ true expected value (if model is linear) \begin{align*}
+	f(X) = \beta_0 + \beta_1X_1 + \ldots + \beta_p X_p 
+\end{align*}
+Ways to quantify prediction uncertainty \begin{enumerate}
+	\item \underline{Confidence interval}: Describe how close $\hat{Y}$ is to $f(X)$. E.g. $95 \%$ CI should contain $f(X)$ with probability $95  \%$\\
+	\id $\rightsquigarrow$ Estimation uncertainty about $\beta_0, \beta_1, \ldots$
+	\item \underline{Prediction interval}: Describes uncertainty about both $f(X)$ and $\epsilon$. E.g., $95 \%$ PI should contain $Y$ with probability $95 \%$
+\end{enumerate}
+
+\tit{Note}: \begin{itemize}
+	\item PI generally wider (longer) than CI
+	\item As $n \rightarrow \infty$, CI shrinks to true value $f(X)$ (i.e. CI has lenght zero, no estimation uncertainty left). 
+	\item As $n \rightarrow \infty$, PI only covers uncertainty about $\epsilon$ (does not collapse to a length zero), there can still be a lot of uncertainty left) 
+\end{itemize}
+
+\paragraph{Other considerations in the linear regression model (3.3)}
+
+\paragraph{Qualitative predictors (3.3.1)}
+$ $\\
+
+E.g. prediction model for the amount somebody donates to an online charity project.\\
+Possible qualitative predictors in that example: \begin{itemize}
+	\item gender
+	\item employment status
+	\item income category (often used as categorical variable for data privacy reasons)
+	\item profession (say, $K$ different groups) 
+	\item political orientation
+\end{itemize}
+$\rightsquigarrow$ Question: How to include these variables into a model?\\
+
+\underline{Case $A$: Only two levels}\\
+
+Example: Unemployed Yes/No \\
+Create a new variable \begin{align*}
+	X_i = \begin{cases}
+	1 \text{ if person $i$ is unemployed}\\
+	0 \text{ if not} 
+	\end{cases}
+\end{align*}
+and use this variable in a regression model.\\
+E.g. \begin{align*}
+	Y_i = \beta_0 + \beta_1 X_i + \epsilon_i = \begin{cases}
+	\beta_0 + \beta_1 \text{ if person $i$ is unemployed}\\
+	\beta_0 \text{ if not}
+	\end{cases}
+\end{align*}
+
+\underline{Charity example}:\\
+\id $\beta_0 =$ Mean contribution of employed persons\\
+\id $\beta_1 =$ Difference in (mean) contribution for unemployed vs. employed persons\\
+
+\tit{Note}: \begin{itemize}
+	\item Coding of $X_i$ is arbitrary: Could also set $X_i$ to 1 for employed persons\\
+	\id \rotatebox[origin=c]{180}{$\Lsh$} Interpretation of parameters would change\\
+	\id \rotatebox[origin=c]{180}{$\Lsh$} RSS statistic/$R^2$ would stay the same
+\end{itemize}
+\underline{Case $B$: More than two levels}\\
+E.g., income category (low/middle/high) $\rightsquigarrow$ 3 levels $\rightsquigarrow$ Need to create two dummy variables \begin{align*}
+	X_{i1} = \begin{cases}
+	 1 \text{ if $i$ is in the middle income category}\\
+	 0 \text{ if not}
+	\end{cases}\\
+	X_{i2} = \begin{cases}
+	1 \text{ if $i$ is in the high-income category}\\
+	0 \text{ if not}
+	\end{cases}\\
+\end{align*}
+Then\\
+$Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \epsilon_i = \begin{cases}
+	\beta_0 + \epsilon_i \id \id \text{low-income}\\
+	\beta_0 +  \beta_1 + \epsilon_i \id \id \text{middle-income}\\
+	\beta_0 + \beta_2 + \epsilon_i \id \id \text{high-income}\\
+\end{cases}$ \begin{itemize}
+	\item $\beta_0$ = mean contribution for low-income
+	\item $\beta_1$ = difference in mean contribution for middle vs. low income
+	\item $\beta_2$ = difference in mean contribution for high vs. low income
+\end{itemize}
+\id low-income category is the baseline category\\
+
+Example: Linear models in R \begin{itemize}
+	\item lm($y \sim x$, data = d) runs linear regression of $y$ on $x$, whereby both are in data set d.
+	\item If $x$ is a factor variable, then R automatically codes the ($K-1$) binary variables we discussed, where $K = \#$ of levels for $x$.
+\end{itemize}
+
+\section{Lecture May 24th}
+
+Yesterday's example: \begin{align*}
+	\underbrace{Y}_{\stackrel{\text{fundraising}}{\text{contribution}}} = \beta_0 + \beta_1X_1 + \ldots + \beta_pX_p + \epsilon
+\end{align*}
+where the $X_i$ are personal charactersitics (age, education, political orientation)
+
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph7}
+\end{align*}
+
+Possible violation of A2: Slope of regression line differs across subgroups
+
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph8}
+\end{align*}
+
+Model 2 yields two different regression lines: \begin{itemize}
+	\item $Y = \beta_0 + \beta_1 X_1 + \epsilon$ \id \id \id \id \id without university education
+	\item $Y = (\beta_0 + \beta_2) + (\beta_1 + \beta_3)X_1 + \epsilon$ \id with university education
+\end{itemize}
+$\rightsquigarrow$ Note: Model 2 is more complex than model 1, hence lower bias but higher variance.\\
+Possible violation of A1: Relation and $Y$ and $X_1$ is not linear. 
+
+\begin{align*}
+	\includegraphics[scale=0.60]{Graph9}
+\end{align*}
+$\rightsquigarrow$ Can we cover nonlinear relations in the linear model?\\
+Possible fixes: Define age categories, i.e. qualitative variable \begin{align*}
+	X_2 = \begin{cases}
+	1 \text{ if } X_1 < 18\\
+	2 \text{ if } 18 \leq X_1 < 24\\
+	3 \text{ if } 24 \leq X_1 < 30\\
+	\vdots
+	\end{cases}
+\end{align*}
+
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph10}
+\end{align*}
+
+\tit{Pro}: More flexible\\
+\tit{Con}: \begin{enumerate}
+	\item Implicitly adds many variables (K-1 binary variables for K age groups) $\rightsquigarrow$ complex model
+	\item Piecewise constant (no variation in subgroup) $\rightsquigarrow$ can be generalized to the piecewise linear model. 
+	\item Non-differentiable
+	\item Uses no information from 'neighboring' age groups (e.g., coefficient for group 54-60 uses no information from people aged 48-54)
+\end{enumerate}
+
+\tit{Better alternatives}: 
+
+\begin{enumerate}
+	\item Use linear model with polynomials of Age
+	\begin{align*}
+		\includegraphics[scale=0.55]{Graph11}
+	\end{align*}
+	\item Use a non-linear/non-parametric model (e.g. K-nearest neighbors) 
+\end{enumerate}
+
+\paragraph{Classification (Chapter 4)}
+$ $\\
+\begin{itemize}
+	\item Predicting qualitative (aka categorical) variable is often called 'classification' $\rightsquigarrow$ Need to assign each observation to one category, or class. 
+	\item  \underline{Examples:} \begin{itemize}
+		\item Predict education of a person (e.g. vocational degree, BSc, MSc, ...) 
+		\item Income categories (if exact numerical income is not available) 
+		\item Acceptance to a university program
+	\end{itemize}
+	\item Classification methods often model the probability of each category, and then classify based on the probabilities
+	\item Methods we discuss here: \begin{itemize}
+		\item Logistic regression
+		\item Linear Discriminant Analysis
+		\item K-nearest Neighbors
+	\end{itemize}
+	\item Later in the course (more computer-intensive): \begin{itemize}
+		\item Trees
+		\item Random Forests
+		\item Boosting 
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Why not linear regression (4.2)}
+$ $\\
+
+\tit{Example}: Predict a person's choice of bus vs. train vs. car for commuting to work/university.\\
+\id Suppose we have a qualitative variable $Y$ for transportation choice, i.e. \begin{align*}
+	Y = \begin{cases}
+	1 \text{ if train}\\
+	2 \text{ if car}\\
+	3 \text{ if bus}
+	\end{cases}
+\end{align*}
+\id What if we used least squares/linear model to predict $Y$? \begin{align*}
+	Y = \beta_0 + \beta_1\underbrace{X_1}_{\text{age}} + \ldots + \beta_p\underbrace{X_p}_{\stackrel{\text{commuting}}{\text{distance}}}  + \epsilon
+\end{align*}
+
+\id Here, the linear model would be based on two unrealistic assumptions \begin{itemize}
+	\item Ordering in transportation choices (train < car < bus???) 
+	\item Numerical interpretation  (train = 1/2, car = 1/3 bus???)
+\end{itemize}
+\id $\rightsquigarrow$ Linear model is not a reasonable choice here\\
+
+The situation is somewhat better (for the linear model) when there are only two levels e.g. \begin{align*}
+	Y = \begin{cases}
+		1 \id \text{ if person chooses car}\\
+		0 \id \text{ if not} 
+	\end{cases}
+\end{align*}
+
+Here the ordering assumption is less implausible (can be viewed as likelihood of choosing 'car') $\rightsquigarrow$ Linear model would predict 'car' if $\hat{Y} > 0.5$.\\
+One can also show: Predictions stay the same if we swap the labels (i.e. 0 if car, 1 if no car).\\ 
+
+\tit{Con}: Can have predictions $\hat{Y} < 0$ or $\hat{Y} > 1$, hence interpretation as probability no longer holds.\\
+\id \id \rotatebox[origin=c]{180}{$\Lsh$} Better alternative: Logistic regression\\
+Consider a binary response $Y \in \{0,1\}$, e.g. $Y = \begin{cases}
+1 \text{ if email is spam}\\
+0 \text{ if not}
+\end{cases}$\\
+For simplicity, let's consider a single predictor $X =$ Percentage of capital letters in subject line\\
+Logistic regression model sets \begin{align*}
+	P(Y = 1| X) = P(X) = \frac{\exp(\beta_0 + \beta_1 X)}{1 + \exp(\beta_0 + \beta_1 X)} \in (0,1) 
+\end{align*}
+
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph12}
+\end{align*}
+
+Note that \begin{align*}
+	\underbrace{\log\left(\frac{p(x)}{1 - p(x)}\right)}_{\text{log-odds ration } \in (- \infty, \infty)} = \beta_0 + \beta_1 X
+\end{align*}
+
+\section{Lecture May 30th} 
+
+\paragraph{Logistic Regression Mode (4.3.1)}
+$ $\\
+
+Binary response $Y \in \{0, 1\}$, e.g.\\
+ $Y = 1$ referendum passes (quorum + majority in favor),\\
+ $Y = 0$ referendum fails.
+
+Regressor $X$, e.g. \begin{itemize}
+	\item share of male voters
+	\item average education level of voters
+	\item voter turnout (percentage of population that participates in referendum) 
+\end{itemize}
+
+\tit{Aim}:\id Model $Pr(Y= 1|X) = p(x)$\\
+\id Logistic regression model $p(x) = \frac{\exp(\beta_0 + \beta_1 X)}{1 + \exp(\beta_0 + \beta_1 X)} \in (0,1)$\\
+\id $\log \frac{p(x)}{1 - p(x)} = \beta_0 + \beta_1 X$ $\in (-\infty, \infty)$\\
+
+Furthermore, \begin{eqnarray*}
+	\frac{\dif p(x)}{\dif x} &=& \frac{\beta_1 \exp(\ldots) \{1 + \exp(\ldots)\} - \beta_1 \exp(\ldots) \exp(\ldots)}{(1 + \exp(\beta_0 + \beta_1X))^2}\\
+	&=& \frac{\beta_1 \exp(\ldots)}{(1+ \exp(\ldots))^2}  \begin{cases}
+	 > 0 \text{ if } \beta_1 > 0\\
+	 = 0 \text{ if } \beta_1 = 0\\
+	 < 0 \text{ if } \beta_1 < 0
+\end{cases}
+\end{eqnarray*}
+
+E.g. if we find, that $\beta_1 > 0$, that implies positive association between $X$ and $p(X)$\\
+$\rightsquigarrow$ can interpret sign of $\beta_1$!\\
+\tit{Note:}\\
+$\frac{\dif p(x)}{\dif x}$ (size of effect of $X$) depends on $X$ $\rightsquigarrow$ Different for each observation in sample. $\rightsquigarrow$ can not easily interpret size of $\beta_1$!\\
+
+\paragraph{Estimating the regression coefficients (4.3.2)}
+$ $\\
+
+\begin{itemize}
+	\item For OLS/linear model: There exists an explicit formula for the coefficient estimates. $\rightsquigarrow$ convenient situation, arises because the model is linear in $\beta$
+	\item Logistic model no longer linear in $\beta$ $\rightsquigarrow$ cannot use the OLS estimator
+	\item  Instead, use maximum likelihood (ML) estimator \begin{itemize}
+		\item Idea: Look for parameter values $\beta_0, \beta_1$ such that the predicted probability corresponds as closely as possible to the oberserved outcome (i.e., probability should be as small as possible if $Y = 0$ and as large as possible if $Y =1$)
+	\item Formally: Use likelihood function \begin{align*}
+		\textit{l}(\beta_0, \beta_1) = \underbrace{\prod\limits_{i: Y_i = 1} p(X_i)}_{\text{observations for which $Y = 1 \rightsquigarrow$ want $p$ as large as possible}}  \id \underbrace{\prod\limits_{j: Y_i = 0} (1 - p(X_j))}_{\text{observations for which $Y = 0\rightsquigarrow$ want $p$ as small as possible}}
+	\end{align*}
+	where $p(X_i)$ and $p(X_j)$ depend on $\beta_0, \beta_1$
+	\end{itemize}
+\end{itemize}
+
+\tit{Note}: \begin{itemize}
+	\item In practice, we use the log likelihood function, which has better numerical properties. 
+	\item Parameters $\hat{\beta}_0, \hat{\beta}_1$, that maximize $\ln \textit{l}(\beta_0, \beta_1)$ are called \underline{maximum likelihood} estimator \begin{itemize}
+		\item Good theoretical properties (consistent, low variance)
+		\item Often easy to use in practice (e.g., $R$'s glm function)
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Making predictions (4.3.3)}
+$ $\\
+
+Example in book: $Y \in \{0,1\}$, $Y = 1$ means that somebody defaults on a credit.\\
+\id \id $\rightsquigarrow$ Want to predict the probability of default, given $X$ ('balance')\\
+In practice: Run MLS to get $\hat{\beta_0}, \hat{\beta_1}$, then we use \begin{align*}
+	\hat{p}(X) = \frac{\exp(\hat{\beta_0} + \hat{\beta_1} X)}{1 + \exp(\hat{\beta_0}, \hat{\beta_1}X)})
+\end{align*}
+
+\paragraph{Multiple logistic regression (4.3.4)}
+$ $\\
+
+Consider using several predictore $X_1, \ldots, X_p$, such that \begin{eqnarray*}
+	\log \frac{p(x)}{1 - p(X)} &=& \beta_0 + \beta_1 X_1 + \ldots + \beta_p X_p\\
+	\Leftrightarrow \id p(X) &=& \frac{\exp(\beta_0 + \beta_1 X_1 + \ldots + \beta_p X_p)}{1 + \exp(\beta_0 + \beta_1 X_1 + \ldots + \beta_p X_p)}\\
+\end{eqnarray*}
+
+Credit example: $X_1$ = balance, $X_2$ = income, $X_3$ = student (yes/no)\\
+\id $\rightsquigarrow$ Especially helpful if predictors $X_1, \ldots, X_p$ are correlated\\
+Credit example (Figure 4.3): \begin{itemize}
+	\item Students have higher balance values on average
+	\item For \underline{given} balance, students are less likely to default. 
+\end{itemize}
+$\rightsquigarrow$ multiple regression takes care of these effects by allowing for 'all else equal' interpretation.\\
+Yes/no variable as regressor (e.g. $X_3$ = student yes/no) \begin{align*}
+	\hat{p}(X) =  \begin{cases}
+	\frac{\exp(\hat{\beta}_0 + \hat{\beta}_1X_1 + \hat{\beta}_2X_2)}{ 1+ \exp(\hat{\beta}_0 + \hat{\beta}_1X_1 + \hat{\beta}_2X_2)} \id \id \text{non-students}\\
+	\frac{\exp(\hat{\beta}_0 + \hat{\beta}_1X_1 + \hat{\beta}_2X_2) + \hat{\beta}_3}{ 1+ \exp(\hat{\beta}_0 + \hat{\beta}_1X_1 + \hat{\beta}_2X_2 + \hat{\beta}_3)}  \id \id \text{students}
+	\end{cases}
+\end{align*}
+
+\paragraph{Logistic regression with > 2 response classes (4.3.5)}
+$ $\\
+
+E.g. three categories: Default vs. renegotiate vs. pay\\
+\id $\rightsquigarrow$ Model each of \underline{three} probabilities via logistic regression\\
+\id $\rightsquigarrow$ Can be done, but not covered in this course\\
+\id $\rightsquigarrow$ Instead, look at discriminant analysis (classification method that generalizes more easily\\
+\id \id to > 2 classes)\\
+
+\section{Lecture June 7th}
+
+Logistic regression: Model $P(Y = 1|X)$
+
+Alternative method: Linear discriminant analysis (LDA) \begin{itemize}
+	\item Model $f(X|Y = 1)$
+	\item Model $f(X|Y = 0)$
+\end{itemize}
+$\rightsquigarrow$ then flip around to get $P(Y = 1| X)$
+
+Why do we need that? \begin{itemize}
+	\item Two situations where logistic regression doesn't work well:\\
+	 1) If classes ($Y = 0$ and $Y = 1$) are well separated, LR coefficients may be unstable,\\
+	 2) if the number of observations in training sample is small
+	\item LDA can be easily generalized to $K$ classes ($Y = 1, 2, \ldots, K$)
+\end{itemize} 
+	
+\tit{\textbf{Using Bayes' Theorem for Classification}}\\
+
+Setup: $Y$ is a qualitative variable with $K \geq 2$ unordered classes, e.g. \begin{itemize}
+	\item $Y = 1, 2, \ldots, K$ different types of images
+	\item $Y = 1, 2, \ldots, K$ different types of cars (marketing) 
+\end{itemize}
+Let $\pi_K$ be the prior probability (before seeing $X$) that $Y = \underbrace{K}_{\text{one of the classes}}$\\
+Let $f_K(X)$ denote the \underline{density function} of $X$ for an observation from the $K$-th class\\
+$\rightsquigarrow f_K(x)$ large if there's a high probability that an observation from class $K$ has $X \approx x$\\ 
+E.g. $X$ = income, $Y \in \{\underbrace{\text{cheap car}}_1, \underbrace{\text{medium-price car}}_2, \underbrace{\text{expensive car}}_3\}$
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph13}
+\end{align*}
+	
+\underline{Bayes' theorem} states that \begin{align}
+	Pr(Y = K| X = x) = \frac{\pi_K f_k(x)}{\sum\limits_{l = 1}^K \pi_l f_l(x)}  \label{Eq. 4}
+\end{align}	
+$\rightsquigarrow$ 'Posterior Probability' after seeing $X$\\
+$\rightsquigarrow$ Can estimate $P_K(x) \equiv Pr(Y = K|X = x)$ by inserting estimates for $\{\pi_l\}_{l = 1}^K$ and $\{f_l\}_{l = 1}^K$ into (\ref*{Eq. 4})
+\begin{itemize}
+	\item Estimating the $\{\pi_l\}$ is easy: Can use fraction of training data that fall into each category
+	\item Estimating the densities $\{f_l(x)\}$ is more challenging, but can be simplified with adding assumptions
+\end{itemize}
+$\Rightarrow$ Next: Discuss approaches for estimating the terms in (\ref*{Eq. 4}), with the aim to approximate the Bayes classifier.\\
+
+\paragraph{Linear discriminant analysis for $p = 1$ (4.4.2)}
+$ $\\
+
+Suppose that $f_K(x)$ is normal with \begin{align*}
+	f_K(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\{- \frac{(x - \mu_k)^2}{2 \sigma^2}\}
+\end{align*}	
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph14}
+\end{align*}
+
+$\Rightarrow$ All densities have the \underline{same variance} but different mean $\mu_K$\\
+Plugging that into (\ref*{Eq. 4}), we get
+\begin{align}
+	P_K(x) = \frac{\pi_K \exp\{-1/2\sigma^2 (x - \mu_K)^2\}}{\sum\limits_{l = 1}^K \pi_l \exp\{-\frac{1}{2\sigma^2}(x - \mu_K)^2\}} \label{Eq. 5}
+\end{align}
+$\rightsquigarrow$ Choose class $K$ for which $P_K(X)$ is largest!
+
+\begin{itemize}
+	\item We can forget about the denominator of (\ref*{Eq. 5}): He's the same number for each class $K = 1, \ldots, K$
+	\item Hence pick class that maximizes $\pi_K \exp \{- \frac{1}{2 \sigma^2} (x - \mu_K)^2\}$
+	\item \underline{Equivalently}: Pick class that maximizes \begin{align*}
+		\log \pi_K - \frac{(x - \mu_K)^2}{2 \sigma^2} = \log \pi_K - \underbrace{\frac{x^2}{2 \sigma^2}}_{\text{does not depend on $K$}} + \frac{x \mu_K}{\sigma^2} - \frac{\mu_K^2}{2 \sigma^2}
+	\end{align*}
+	$\Rightarrow$ Pick  $K$ that maximizes: \begin{align*}
+		\log \pi_K + \frac{x \mu_K}{\sigma^2} - \frac{\mu_K^2}{2 \sigma^2} \equiv \delta_K(x)
+	\end{align*}
+\end{itemize}
+
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph15}
+\end{align*}
+
+In practice we don't know $\mu_K$ and $\sigma^2 \Rightarrow$ Use estimates (average of $X$ for observations in class $K$): \begin{eqnarray*}
+	\hat{\mu}_K &=& \frac{1}{n_K} \sum\limits_{i: Y_i = K} X_i\\
+	\hat{\sigma}^2 &=& \frac{1}{(n-K)} \sum\limits_{k = 1}^K \sum\limits_{i: Y_i = K} (X_i - \hat{\mu}_K)^2,
+\end{eqnarray*}
+where $n = \#$ of training data and $n_K = \#$ of training data in class $K$.
+	
+\section{Lecture June 13th}
+
+see slides\\
+\tit{Review: Discriminant Analysis}\\
+
+Goal: Classify $Y \in \{1, 2, \ldots, K\}$ based on predictor $X$\\
+Bayes Formula: \begin{align}
+	Pr(Y = K| X = x) = \frac{\pi_K f_k(x)}{\sum\limits_{l = 1}^K \pi_l f_l(x)}, \label{Eq. 6}
+\end{align}
+where $\pi_k$ are prior probabilities, and $f_k(x)$ are group-specific densities for $X$.\\
+\colorbox{green}{Needed}: Assumptions/estimates for $\pi_k$ and $f_k(x)$.\\
+Assume that $f_k$'s are normal with class-specific mean $\mu_k$ and common variance $\sigma^2$, i.e. \begin{align*}
+	f_k(x) = \frac{1}{\sqrt{2 \pi} \sigma} exp \left( - \frac{(x- \mu_k)^2}{2 \sigma^2}\right)
+\end{align*}
+Decision rule: Choose $k$ for which \begin{align*}
+	\delta_k(x) = x \frac{\mu_k}{\sigma^2} - \frac{\mu_k^2}{2 \sigma^2} + \log \pi_k
+\end{align*}
+is largest. In practice: Use esimates $\hat{\mu}_k$, $\hat{\sigma}^2$
+
+Example: Figure 4.4 in the book\\
+
+\tit{LDA for $p > 1$}\\
+
+Equation (\ref*{Eq. 6}) can also be used when $p > 1$, i.e. many predictors. In that case, $X = [X_1, \ldots, X_p]'$ is a vector.\\
+Density $f_k(x)$ assumed to be multivariate normal, i.e. \begin{align*}
+	f_k(x) = \frac{1}{(2p)^{p/2} |\Sigma|^{1/2}} \exp(-0.5(x - \mu_k)^T \Sigma^{-1} (x - \mu_k))
+\end{align*}
+Note: Covariance matrix $\Sigma$ is the same for all $k$! 
+
+\tit{Background: Multivariate normal} \begin{itemize}
+	\item Mean vector $\mu$ gives mean for each element of $X = (X_1, \ldots, X_p)^T$
+	\item Covariance matrix $\Sigma$ gives (co-)variances of $X$, with \begin{align*}
+		\Sigma_{[I,j]} = Cov(X_I, X_j) \text{ and } \Sigma_{[I, I]} = Var(X_I) 
+	\end{align*}
+	\item example pictures for density, see book Figure 4.5
+\end{itemize}
+
+Classification rule: Assign to class $k$ for which \begin{align*}
+	\delta(x) = x^T \Sigma^{-1} \mu_k - 0.5 \mu_k^T \Sigma^{-1} \mu_k + \log \pi_k
+\end{align*}
+is largest.\\
+In practice: Use estimates $\hat{\mu}_k$ and $\hat{\Sigma}$\\
+
+Example: Figure 4.6\\
+
+\tit{Quadratic Discriminant Analysis}
+\begin{itemize}
+	\item Now assume that $X|Y = k$ is multiv. normal with mean $\mu_k$ and covariance matrix $\Sigma_k$.
+	\item $\neq$ LDA, where the covariance is the same for all $k$
+	\item For QDA, discriminant function $\delta_k(x)$ becomes a quadratic function of x (see eq. 4.23 in the book)
+\end{itemize}
+Example: Figure 4.9\\
+
+\tit{QDA: Numerical example}\\
+
+Consider QDA with a single predictor ($p = 1$)
+\begin{itemize}
+	\item Formula for $\delta_k(x)$?
+	\item Consider the case of only $K = 2$ classes, and let \begin{itemize}
+		\item $\pi_1 = \pi_2 = 0.5$
+		\item $\mu_1 = 0$, $\sigma_1^2 = 4$
+		\item $\mu_2 = 1$, $\sigma_2^2 = 1$
+	\end{itemize}
+	\item Sketch $f_1(x), f_2(x)$ in a single plot
+	\item Which values for $x$ get assigned to class 1?
+\end{itemize}
+
+\begin{align*}
+	f_k(x) = \frac{1}{\sqrt{2 \pi \sigma_k^2}} \exp \left(- \frac{(x- \mu_k)^2}{2 \sigma_k^2}\right) \id \text{(QDA)}
+\end{align*}
+\begin{align}
+	P(Y = k| X = x) = \frac{\pi_k f_k(x)}{\sum\limits_{l = 1}^K \pi_l f_l(x)} \label{Eq. 7}
+\end{align}
+
+
+$\rightsquigarrow$ Choose $K$ which maximizes (\ref*{Eq. 7}), given QDA assumptions\\
+maximize $\pi_k f_k(x)$ \begin{align*}
+	= \frac{\pi_k}{\sigma_k \sqrt{2 \pi}} \exp \left(- \frac{(x- \mu_k)^2}{2 \sigma_k^2}\right) = \log \pi_k - \log \sigma_k - 1/2 \log 2\pi - \frac{(x-\mu_k)^2}{2 \sigma_k^2}
+\end{align*}
+$\rightsquigarrow$ Choose $K$ that maximizes \begin{align*}
+	\delta_k(x) = \log \pi_k - \log \sigma_k - \frac{(x - \mu_k)^2}{2 \sigma_k^2}
+\end{align*}
+Now let $K = 2$, $\pi_1 = \pi_2 = 0.5$, $\mu_1 = 0, \mu_2= 1$, $\sigma_1^2 = 4, \sigma_2^2 = 1$\\
+
+$\delta_1 (x) = \log(1/2) - \log(2) - \frac{(x-0)^2}{8} = - 2 \log(2) - \frac{x^2}{8}$\\
+$\delta_2 (x) = - \log(2) - \log(1) - \frac{(x-1)^2}{8} = -\log(2) - \frac{(x-1)^2}{8} $\\
+
+Classify to $K = 1$ iff
+\begin{eqnarray*}
+	\delta_1(x) &>& \delta_2(x)\\ \Leftrightarrow \delta_1(x) - \delta_2(x) &>& 0\\ \Leftrightarrow - \log(2) - \frac{x^2}{8} + \frac{(x-1)^2}{2} &>& 0\\
+	- \log(2) - \frac{1}{8} x^2 + \frac{x^2}{2} - \frac{2x}{2} + \frac{1}{2} &>& 0\\
+	(- \frac{1}{8} + \frac{4}{8}) x^2 - x + \frac{1}{2} - \log(2) &>& 0
+\end{eqnarray*}  
+$\Rightarrow$ Find $x^*$ such that $\delta_1(x^*) - \delta_2(x^*) = 0$ 
+\begin{align*}
+	x^* = \frac{1 \pm \sqrt{1 - \frac{3}{2} \cdot c}}{\frac{3}{4}} = \{-0.181; 2.847\} 
+\end{align*}
+
+\tit{QDA when $p$ is large}
+\begin{itemize}
+	\item One covariance matrix contains \begin{align*}
+		0.5p (p+1)
+	\end{align*}
+	parameters
+	\item Need one for each class...
+	\item Hence, large training data set needed
+\end{itemize}
+
+\tit{Comparison of classification methods} 
+\begin{itemize}
+	\item LDA and logistic regression are quite similar \begin{itemize}
+		\item Both have linear decision boundaries, see p. 151 in book
+		\item Slightly different assumptions, reflected in estimation
+	\end{itemize}
+	\item Flexibility: QDA beats LDA
+	\item Stability: LDA beats QDA
+	\item KNN can be good, but $K$ must be chosen with care \begin{itemize}
+		\item Bias-variance trade-off
+		\item Cross-validation methods
+	\end{itemize}
+\end{itemize}
+
+\tit{Simulation example in the book (p.152)}\\
+Six scenarios; $p = 2$ predictors in each. \begin{itemize}
+	\item Scenarios 1/2: $X$ follows a multivariate normal (as in LDA assumptions)
+\end{itemize}
+
+\section{Lecture June 14th} 
+
+False positive rate = $\frac{\# \{\text{Prediction = Yes, Outcome = No}\}}{\# \{\text{Outcome = No}\}} =$ Probability of predicting 'Yes', given that outcome is 'No'\\
+
+True positive rate = $\frac{\# \{\text{Prediction = Yes, Outcome = Yes}\}}{\# \{\text{Outcome = Yes}\}} =$ Probability of predicting 'Yes', given that outcome is 'Yes'.\\
+
+\tit{ROC curve:}\\
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph16}
+\end{align*}
+
+A: Always predict 'No' $\rightsquigarrow$ no false positives, no true positives\\
+B: Always predict 'Yes' $\rightsquigarrow$ FP rate = TP rate = 1\\
+$\rightsquigarrow$ Good predictor attains good tradeoff $\rightsquigarrow$ Area between ROC curve and $45^{\circ}$-line is large\\
+
+\underline{Note:} \begin{itemize}
+	\item Statistical model (like LDA or logistic regression) gives a set of probabilities $\{p_i\}_{i \in I}$, $I = \{1, \ldots, n\}$, where \begin{align*}
+		\hat{p}_i = (\text{$\widehat{Prob}$ obs. $i$ = Yes})
+	\end{align*}
+	\item Classification/prediction rule: Classify observation $i$ as 'Yes' if $\hat{p}_i > \tau$
+	\item For each choice of $\tau$, we get a certain point on the ROC curve (i.e. FP rate, TP rate)
+	\item If the model is very good, each choice of $\tau$ leads to some point 'far away' from the $45^{\circ}$-line\\
+	(except that $\tau = 0$ always leads to point B, and $\tau = 1$ always leads to point A)
+\end{itemize}
+
+\paragraph{Resampling Methods (Chapter 5)}
+$ $\\
+
+Broad idea: \begin{itemize}
+	\item Draw repeated samples from training data
+	\item Fit a given statistical model in each iteration
+	\item Examine model fit
+\end{itemize}
+
+Main purpose: Estimate a model's test sample performance (cross-validation)\\
+
+\paragraph{Cross validation (5.1)}
+$ $\\
+
+Question: How to estimate the test-sample performance of a given model (say, $\hat{f}$)?
+\begin{itemize}
+	\item Simply using the training sample performance of $\hat{f}$ as a proxy for the test sample performance is a bad idea (the two may differ a lot, e.g. due to overfitting)
+	\item Some methods (e.g. adjusted $R^2$) make a mathematical adjustment to training sample performance in order to estimate test sample performance $\rightsquigarrow$ see chapter 6 in book 
+	\item Here: Discuss cross-validation as an estimator for test sample performance
+\end{itemize}
+
+\paragraph{Validation set approach (5.1.1)}
+$ $\\
+
+Randomly split sample in two parts (training and validation parts). Fit the model to the training part, and see how it performs on the validation sample.\\
+$\id \id \rightsquigarrow$ see figure 5.1 in the book\\
+\tit{Pro:} Easy to understand and to implement\\
+\tit{Contra:} You obtain a pessimistic estimate of the model performance (you use only n/2 rather than n observations for model fitting). The Estimate of the test error is quite variable, depends on random split into training vs. validation sample.\\
+
+\paragraph{Leave-one-out Cross-validation (5.1.2)}
+$ $\\
+
+\tit{Idea:} Fit model to observations $i = 2, \ldots, n$, then compute $MSE_1 = (Y_1 - \hat{Y}_1)^2$. Then use observations $i = 1, 3, 4, \ldots,n$, and compute $MSE_2 = (Y_2 - \hat{Y}_2)^2$\\
+
+Repeating this $n$ times gives $n$ squared errors, $MSE_1, \ldots, MSE_n$.\\
+The LOOCV estimate of the test error is then given by \begin{align*}
+	CV_{(n)} = \frac{1}{n} \sum\limits_{i = 1}^n MSE_i
+\end{align*}
+\tit{Pro:} (Compared to validation set approach) \begin{itemize}
+	\item Get realistic estimate of test error (use $n-1 \approx n$ observations for model fitting)
+	\item No randomness in training/validation splits
+\end{itemize}
+
+\tit{Con:} \begin{itemize}
+	\item Need to fit model n times $\rightsquigarrow$ may take very long time 
+\end{itemize}
+
+\section{Lecture June 20th} 
+
+Cross-Validation: Tool to estimate a model's performance for new (AKA test) data\\
+
+\paragraph{$K$-fold Cross-Validation (5.1.3)}
+$ $\\
+
+Idea: Divide data into $K$ groups (or folds) of approximately equal size. 
+Then use the first group as a validation set, and groups 2 to K for model fitting. Compute MSE as the average squared error in group 1.\\
+Repeat this process $K$ times, using a different group as validation set each time. The $K$-fold Cross Validation estimate is then given by \begin{align*}
+	CV_{(K)} = \frac{1}{K} \sum\limits_{i = 1}^K MSE_i
+\end{align*}
+Note that LOOCV (Leave-One-Out-Cross-Validation) is a special case of $K$-fold Cross Validation, with $K = n$. In practice, one often uses $K = 5$ or $K = 10$.
+
+\tit{Pro}: \begin{itemize}
+	\item Much faster than LOOCV (need to refit model 5 or 10 times instead of $n$ times)
+	\item Estimate of the test error has a lower variance than for LOOCV (see below).
+\end{itemize}
+
+\tit{Example}: Want to compare linear regression to a more fancy method. \begin{itemize}
+	\item Run $K$-fold CV for linear regression, get estimate $CV_{(K)}^{LR}$ (LR = linear regression)
+	\item Do the same for the fancy method, get $CV_{(K)}^{FM}$\\
+	$\rightsquigarrow$ Choose method with better (=lower) $CV_{(K)}$ estimate. 
+\end{itemize}
+
+\paragraph{Bias-Variance Trade-Off for $K$-fold Cross-Validation (5.1.4)}
+$ $\\
+\begin{itemize}
+	\item LOOCV gives nearly unbiased estimate of the test MSE (use $n-1 \approx n$ observations for the model fitting)
+	\item With $K$-fold CV, we use $\frac{K - 1}{K} \times n$ observations for the model fitting\\
+	$\rightsquigarrow$ introduces some bias since we are using fewer than $n$ observations for fitting. 
+	\item In LOOCV, we average over $n$ training samples that are almost identical, hence the MSE estimates are highly correlated. In $K$-fold Cross Validation, we average over $K$ training samples that have less overlap, and are thus less correlated. 
+\end{itemize}
+$\rightsquigarrow$ To sum up, $K$-fold CV gives an estimator of test MSE that has (i) more bias and (ii) less variance than the estimator from LOOCV.\\
+In practice, $K = 5$ or $K = 10$ often work well.\\
+
+\tit{Note}: For logistic regression, one can replace the MSE criterion by the log-likelihood function. One could also use the MSE for probabilities, though: If $\hat{p}_j$ is the predicted probability for observation j, and observation $Y_j \in \{0,1\}$, then \begin{align*}
+	(Y_j - \hat{p}_j)^2 = \begin{cases}
+	(1 - \hat{p}_j)^2 \id \text{ if } Y_j = 1\\
+	\hat{p}_j^2 \id \id \id \text{ if } Y_j = 0
+	\end{cases}\\
+\end{align*}
+
+\section{Lecture June 21st}
+
+\paragraph{Chapter 6: Linear model selection and regularization}
+$ $\\
+
+Setup: Regression model \begin{align}
+	Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_p X_p + \epsilon \label{Eq. 8}
+\end{align}
+(e.g. $Y$ = Goal difference between Team 1 and Team 2, $X_1, \ldots, X_p$ encode information on both teams, such as performance, betting odds, info on players, etc.)\\
+$\rightsquigarrow$ $p$ can be quite large \begin{itemize}
+	\item often unclear ex ante which variables are informative
+	\item considering interactions and polynomials further increases $p$
+\end{itemize}
+
+Until now: Fitted Equation (\ref*{Eq. 8}) with OLS. This chapter: Look at fitting procedures that are better in terms of \underline{prediction accuracy} and/or \underline{interpretability}.
+\begin{itemize}
+	\item \underline{Prediction accuracy}: If there are many predictors ($p$ is large), OLS prediction has large variance.\\
+	Solution: Decrease variance by $\underbrace{\text{constraining}}_{\text{e.g. set to zero}}$ or $\underbrace{\text{shrinking}}_{\text{e.g. shrink toward zero}}$ some of the coefficient estimates $\hat{\beta}_j$
+	\item \underline{Interpretability}: In many data sets, coefficients $\beta_1, \ldots, \beta_p$ contain irrelevant variables that are not associated with $Y$. The presence of many variables $j$ with $\beta_j$ 'close to zero' (but not exactly zero) makes OLS hard to interpret.\\
+	Solution: Variable methods for choosing a relevant subset of predictors.\\ 
+\end{itemize}
+
+\paragraph{Subset Selection (6.1)}
+$ $\\
+
+Idea: Find the best subgroup of all $p$ possible vectors.\\ 
+
+\tit{Algorithm 6.1(from the book): Best Subset Selection} \begin{enumerate}
+	\item Let $M_0$ = null model (no predictors, i.e. $\hat{Y} = \overline{Y}$ (training sample average))
+	\item For $K = 1, 2, \ldots, P$\\
+	(a) Fit all $\binom{P}{K}$ models that contain exactly $K$ predictors\\
+	(b) Let $M_K$ be the best of theses models (in terms of $R^2$) 
+	\item Select a simple best model from among $M_0, \ldots, M_P$ using CV (or adjusted $R^2$)\\
+\end{enumerate}
+
+Note: Adjusted $R^2 = 1 - \frac{RSS/(n-d-1)}{TSS/(n-1)}$,\\
+where $RSS = \sum\limits_{i = 1}^n (Y_i - \hat{Y}_i)^2$, $TSS = \sum\limits_{i = 1}^n (Y_i - \overline{Y})^2$, $d = \#$ of predictors\\
+$\rightsquigarrow$ Like $R^2$, but imposes a penalty on the $\#$ of predictors, d\\
+$\rightsquigarrow$ Fixes the tendancy of $R^2$ to select overfitted models\\
+$\rightsquigarrow$ Like CV, adjusted $R^2$ is an estimate of a model's test error (adjusted $R^2$ simpler, CV tends to be more accurate)
+
+\section{Lecture June 28th} 
+
+\paragraph{Stepwise selection (6.1.2)}
+$ $\\
+
+Best Subset Selection runs into problems when $p$ gets large:\\
+Need to evaluate many (!) combinations of variables $\rightsquigarrow$ very expensive in terms of computer time\\
+$\rightsquigarrow$ One fix: Forward step-wise selection\\ 
+
+\tit{Algorithm 6.2 (from the book): Forward stepwise selection} 
+
+\begin{enumerate}
+	\item Let $M_0$ denote the null model without any predictors
+	\item For $K = 0, \ldots, p-1$ \begin{enumerate}
+		\item Consider all models that add \underline{one} additional predictor to $M_K$
+		\item Choose the best among these $p-K$ models, say $M_{K+1}$ (use $R^2$ as criterion)
+	\end{enumerate}
+	\item Select a single best model from $M_0, \ldots, M_p$ using CV or adjusted $R^2$ (or BIC, Akaike,... )
+\end{enumerate}
+
+\underline{Note}: This is much simpler than Best Subset Selection: At step $K$, we need to consider only $p-K \ll \binom{p}{K}$ models.\\
+
+Alternative Strategy to deal with many predictors (i.e., large $p$):\\
+Shrinking the coefficients towards zero $\rightsquigarrow$ We'll look at two shrinkage methods, Ridge Regression and Lasso.\\
+
+\paragraph{Ridge Regression (6.2.1)}
+$ $\\
+
+OLS minimizes \begin{align*}
+	RSS = \sum\limits_{i = 1}^n (Y_i - \beta_0 - \sum\limits_{j = 1}^p \beta_j X_{ij})^2
+\end{align*}
+
+Ridge Regression minimizes \begin{align*}
+	 RSS + \lambda \sum_{j = 1}^p \beta_j^2,
+\end{align*}
+where $\lambda \geq 0$ is a tuning parameter.\\
+The term $\lambda \sum\limits_{j = 1}^p \beta_j^2$ is  called a shrinkage penalty (SP)
+\begin{itemize}
+	\item Small when $\beta_j$'s are close to zero\\
+	\rotatebox[origin=c]{180}{$\Lsh$} Hence, sets the incentive to choose 'smaller' $\beta_j$'s
+	\item $\lambda = 0$, No SP, gets OLS estimates
+	\item $\lambda$ large: SP grows, coefficients get smaller (as $\lambda \rightarrow \infty$, all $\beta_j$'s get to zero)
+	\item Get different set of coefficients for each possible value of $\lambda$
+	\item By construction, $\beta_j$'s are not exactly equal to zero (cannot easily tell which variables are 'in' or 'out')\\
+	$\rightsquigarrow$ makes sense for prediction, but not for interpretation
+	\item Good choice of $\lambda$ is crucial, can be done using CV
+\end{itemize}
+
+\tit{Implementation}: 
+\begin{itemize}
+	\item SP does not affect the intercept, $\beta_0$\\
+	\item Before running Ridge Regression, one should standardize the predictors using the following formula \begin{align*}
+		\widetilde{X}_{ij} = \frac{X_{ij} - \overline{X}_j}{\sqrt{\frac{1}{n} \sum\limits_{i = 1}^n (X_{ij} - \overline{X}_j)^2}}
+	\end{align*}
+	with $\overline{X}_j = \frac{1}{n} \sum\limits_{i = 1}^n X_{ij}$\\
+	$\rightsquigarrow \widetilde{X}_{ij}$ has mean 0 and variance 1.
+\end{itemize}
+
+Why does Ridge improve upon OLS? E.g., suppose the true model is linear, but there are many predictors.\\
+
+\setlength\arraycolsep{25pt}
+\begin{center}
+	$\begin{matrix}
+	\text{\underline{OLS} ($\lambda = 0$)} & \text{\underline{Ridge} ($\lambda > 0$)}\\
+	\text{no bias} & \text{bias}\\
+	\text{higher variance} & \text{lower variance}
+	\end{matrix}$\\
+\end{center}
+
+In general, increase in $\lambda$ leads to an increase in (squared) bias, a decrease in variance and an increase \underline{or} decrease in MSE\\
+\id \rotatebox[origin=c]{180}{$\Lsh$} Use CV to find good choice of $\lambda$
+\begin{align*}
+	\includegraphics[scale=0.55]{Graph17}
+\end{align*}
+
+Possible factors determining optimal choice of $\lambda$ \begin{itemize}
+	\item If predictors are noisy, and have little explanatory power: Expect large $\lambda^*$, i.e. don't use predictors a lot, set coefficients to 'almost zero'
+	\item If training sample size (n) is large: Expect small value $\lambda^*$, since estimation noise plays a smaller role
+\end{itemize}
+
+Drawback of Ridge: Includes all $p$ predictors in final model \begin{itemize}
+	\item Penalty $\lambda \sum\limits_{j = 1}^p \beta_j^2$ shrinks coefficients toward zero, but not exactly equal to zero
+	\item Not a problem for prediction, but for interpretation (makes it harder to explain model choice)
+\end{itemize}
+
+\rotatebox[origin=c]{180}{$\Lsh$} Seek a method that keeps benefits of Ridge (shrinkage/prediction) but is easier to interpret
+\rotatebox[origin=c]{180}{$\Lsh$} Fix: Lasso (least absolute shrinkage and selection operator)\\
+
+Lasso coefficients minimize \begin{align*}
+	\underbrace{\sum\limits_{i = 1}^n (Y_i - \beta_0 - \sum_{j = 1}^p \beta_j X_{ij})^2}_{RSS} + \lambda \sum\limits_{j = 1}^p |\beta_j|
+\end{align*}
+
+\underline{Note}: Lasso penalty $\neq$ Ridge penalty = $\lambda \sum\limits_{j = 1}^p \beta_j^2$\\
+Lasso penalty is called an $L_1$ penalty, since $L_1$ norm of $\beta = (\beta_1, \ldots, \beta_p)$ is given by $\| \beta\|_1 = \sum\limits_{j = 1}^p |\beta_j|$\\
+
+Effect of $L_1$ penalty: When $\lambda$ is sufficently large, some of the coefficients get kicked out completely (i.e., $\beta_j = 0$ for these coefficients). Hence Lasso performs both variable selection and shrinkage, and is thus easier to interpret than Ridge.
+
+\section{Lecture July 3rd}
+
+Another formulation for Ridge and Lasso\\
+One can show, that Ridge Regression solves the following problem: \begin{align*}
+	\min\limits_{\beta} \{ \underbrace{\sum\limits_{i = 1}^n (Y_i - \beta_0 - \sum\limits_{j = 1}^p \beta_j X_{ij})^2}_{= RSS(\beta)}\} \id \text{ subject to } \id \sum\limits_{j = 1}^p \beta_j^2 \leq s
+\end{align*}
+Similarily, Lasso solves \begin{align*}
+	\min\limits_\beta RSS(\beta) \id \text{ subject to } \id \sum\limits_{j = 1}^p |\beta_j| \leq s
+\end{align*}
+
+\tit{Notes}: \begin{itemize}
+	\item $s$ is a 'budget' that we can 'spend' on the coefficients $\beta_1, \ldots, \beta_p$
+	\item  $s \to \infty$: Constraint is non-binding, and we end up at the OLS solution for $\beta$
+	\item $s = 0$: Get $\beta_0 \neq 0$, $\beta_1 = \ldots = \beta_p = 0$
+	\item More generally: There is a one-to-one correspondence between $\lambda$ (weight on the coefficient penalty, we used before) and $s$.\\
+	That means for each $s$ we can find a value of $\lambda$ that results in the same Ridge (or Lasso) coefficients. Larger values of $s$ (large budget) correspond to smaller values for $\lambda$ (small penalty).
+\end{itemize}
+
+Best Subset Selection (BSS) can also be written as a 'budget' problem: It solves \begin{align*}
+	\min\limits_{\beta} RSS(\beta) \id \text{ subject to } \id \sum\limits_{j = 1}^p \mathbbm{1}(\beta_j \neq 0) \leq s
+\end{align*}
+In words: BSS chooses best model with at most $s$ nonzero coefficients.\\
+$\rightsquigarrow$ As noted, earlier, BSS is tedious since it entails $\binom{p}{s}$ estimation problems.\\
+$\rightsquigarrow$ Lasso/Ridge are feasible alternatives to BSS.\\
+
+\tit{Comparing Ridge and Lasso} \begin{itemize}
+	\item Lasso is easier to interpret than Ridge\\
+	\rotatebox[origin=c]{180}{$\Lsh$} can look at set of 'selected' variables
+	\item Which one is better at prediction?\\
+	Hard to tell, ultimately an empirical question. Ridge 'assumes' that there are many variables with small effects/coefficients, Lasso assumes, that there are a few key variables with big effects/coefficients (sparsity).
+\end{itemize}
+
+Figure 6.7 (book): Graphical illustration of budget formulation for Lasso (left) and Ridge (right).\\
+Lasso: Budget represented as a diamond type object\\
+Ridge: Budget represented as a circle\\
+Coefficient solution = tangential point between budget and RSS contours (= lowest RSS value that's within the budget).\\
+$\rightsquigarrow$ Figure illustrates that the Lasso budget is more likely to yield zero solutions (for $\beta_1$ in this case) 
+
+\paragraph{High-Dimensional Data (6.4.1)}
+
+\begin{itemize}
+	\item Traditional Statistics: Large $n$, small $p$ \begin{itemize}
+		\item Medicine: Predict blood pressure of $n$ patients based on age, gender, BMI 
+		\item Econ: Predict wage based on a few features (experience, education, industry dummies)
+	\end{itemize}
+	\item 21st century: $p$ may be large \begin{itemize}
+		\item Often: Much cheaper/easier to increase $p$ than increase $n$
+		\item Electronic tracking (e.g. browser, fitness gadgets): No limit on $p$, what about $n$?
+		\item Similarily, text mining
+		\item Statistical ways to increase $p$ (interactions, polynomials)
+	\end{itemize}
+\end{itemize}
+
+\paragraph{What goes wrong in high dimensions? (6.4.2)} 
+$ $\\ 
+
+Drastic example: $p = n$ \begin{itemize}
+	\item Linear model (OLS) gives percet fit
+	\item I.e., $\hat{y}_i = y_i$ for all $i$ in training sample
+	\item Overfitting, i.e. test sample performance likely very poor
+\end{itemize}
+Similar (but less drastic) phenomena if $p$ is just a little smaller than $n$
+
+\paragraph{Regression in high dimensions (6.4.3)} 
+$ $\\
+
+Linear model $Y = \beta_0 + \beta_1X_1 + \ldots + \beta_pX_P + \epsilon$, with large $p$ \begin{itemize}
+	\item Model fitting: BSS/FSS, Ridge, Lasso much better than OLS
+	\item Complexity reduction via selection (BSS, Lasso) and shrinkage (Ridge, Lasso)
+\end{itemize}
+
+\tit{Prediction when $p$ is large: Key Points} \begin{itemize}
+	\item Shrinkage helps!
+	\item Tuning parameter selection (degree of shrinkage, $\lambda$) important
+	\item Adding new predictors: Signal or noise 
+	\begin{itemize}
+		\item Signal helps, noise hurts
+		\item Ideally: Algorithm separates signal from noise
+		\item In practice: Common sense helps to design/select features
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Interpreting Results in High Dimensions (6.4.4)} 
+$ $\\
+Don't overstate results
+\begin{itemize}
+	\item Identify subset of useful features, even if they don't form the true model
+	\item Correlation vs. causation 
+\end{itemize}
+Communication: Report test-sample or cross-validation metrics, not training-sample stuff ($p$-values, $R^2$)\\
+Example: Report subset of features that gets selected when $\lambda = \lambda^*$ is selected by CV.
+
+\section{Lecture July 4th} 
+
+\paragraph{Chapter 8: Tree Based-Methods}
+$ $\\ 
+\begin{itemize}
+	\item Regression or classification trees (Ch. 8.1) are intuitive and have natural interpretation
+	\begin{itemize}
+		\item Useful for interpretation/communication
+		\item See examples in slides
+	\end{itemize}
+	\item Prediction accuracy inferoir to other methods
+	\item Ensemble methods (Ch. 8.2) greatly improve trees' prediction accuracy
+	\begin{itemize}
+		\item Tree $\Rightarrow$ Random Forests \& co.
+		\item Prediction accuracy highly competitive, interpretation not straightforward
+	\end{itemize}
+\end{itemize}
+
+\textit{Figure 8.1 and 8.2} 
+
+\tit{Trees: Terminology} 
+\begin{itemize}
+	\item Tree is defined by binary splits of predictor space
+	\begin{itemize}
+		\item Recursively put observations in two bins
+	\end{itemize}
+	\item $R_1$, $R_2$, $R_3$ from example are terminal nodes or leaves
+	\item Other (non-terminal) nodes are called internal nodes
+	\begin{itemize}
+		\item Branches connect several nodes (e.g. left vs right branch)
+	\end{itemize}
+\end{itemize}
+
+\tit{Prediction via trees} 
+\begin{itemize}
+	\item Basis: Predictor space, i.e. set of possible values for $X_1, \ldots, X_p$
+	\item Tree prediction: \begin{itemize}
+		\item Divide predictor space into $J$ distinct and non overlapping regions, $R_1, \ldots, R_J$
+		\item Prediction is the same for all observations that fall into a region $R_j$: Mean response for all observations in $R_j$
+	\end{itemize}
+\end{itemize}
+
+\tit{RSS of tree}: \begin{align*}
+	\sum\limits_{j = 1}^J \underbrace{\sum\limits_{i: x_i \in R_j} (y_i - \hat{y}_{R_j})^2}_{ = \text{ RSS within leaf } R_j}, 
+\end{align*}
+$\hat{y}_{R_j}$ = prediction for observation in leaf $R_j$ (same for all $i: x_i \in R_j$)\\
+
+\tit{How to find the partitions $R_1, \ldots, R_J$} 
+
+Goal: Find partitions which minimize RSS, \begin{align*}
+	\sum\limits_{j = 1}^J \sum\limits_{i: x_i \in R_j} (y_i - \hat{y}_{R_j})^2
+\end{align*}
+Note: prediction is the same for all $i \in R_j$!
+
+\underline{Given} choice of leaves $R_1, \ldots, R_J$: optimal to set \begin{align*}
+	\hat{y}_{R_j} = \frac{1}{|R_j|} \sum\limits_{i: x_i \in R_j} y_i, = \text{ mean of  $y_i$ within leaf $R_j$}
+\end{align*}
+$|R_j|$ = number of observations within leaf $R_j$
+
+\tit{Recursive binary splits}
+
+\begin{itemize}
+	\item Find, best split given all previous splits
+	\item 'Greedy', i.e. don't incorporate possible future splits
+	\item Procedure: Find variable $j$ and split point $s$ which minimize \begin{align*}
+		RSS(j,s) = \sum\limits_{i:x_i \in R_1(j,s)} (y_i - \hat{y}_{R_1})^2 + \sum\limits_{i: x_i \in R_2(j,s)} (y_i - \hat{y}_{R_2})^2
+	\end{align*}
+	where $R_1(j,s)$ and $R_2(j,s)$ are the two 'buckets' that result from using $j$ and $s$ for splittiing: \begin{align*}
+		R_1 = \{X|X_j < s\}, \id R_2 = \{X|X_j \geq s\}
+	\end{align*}
+\end{itemize}
+
+Splitting always reduces RSS\\
+(very) simple example: Only one predictor ($p = 1$), two observations ($n = 2$)
+\begin{center}
+	$\begin{matrix}
+		i & x_i & y_i\\
+		\hline
+		1 & 0 & 2\\
+		2 & 4 & 5
+	\end{matrix}$
+\end{center}
+\underline{Before} split: RSS = $(2 - 3.5)^2 + (5 - 3.5)^2 = 2 \cdot 2.25$\\
+\underline{Split}: Only have one prediction ($X$) that can be used for splitting. all 'reasonable split points are $\in (0,4)$ e.g. split at $\{X < 2\}$ vs. $\{X \geq 2\}$\\
+\id $\rightsquigarrow$ each bucket contains only one observation, RSS = 0\\
+
+Example shows that splitting always reduces RSS, up to a (crazy) limiting case where each bucket contains exactly one observations\\
+
+\tit{Gini index} \begin{align*}
+	G = \hat{p}_m (1- \hat{p}_m)
+\end{align*} \begin{align*}
+	\includegraphics[scale=0.55]{Graph18}
+\end{align*}
+Idea: Want to have buckets that separate 'zeros' from 'ones' (i.e. sharp prediction)
+
+\tit{Finding the optimal tree size}\\
+
+\begin{itemize}
+	\item Size $|T|$ of a tree $T$ can be measured by the number of terminal nodes (three in simple example above)
+	\item Cost-complexity pruning: Grow very large tree $T_0$, then find optimal subtree $T \subset T_0$ that minimizes \begin{align*}
+		\sum\limits_{m = 1}^{|T|} \sum\limits_{i: x_i \in R_m} (y_i - \hat{y}_{R_m})^2 + \alpha |T|
+	\end{align*}
+	where $\alpha$ is a tuning parameter that penalizes complexity 
+	\item $\alpha$ can be determined via cross-validation
+\end{itemize}
+
+\tit{Algorithm: (8.1 in the book)} 
+\begin{enumerate}
+	\item Use recusive binary splitting to grow a large tree on the training data, stopping only when each terminal node has fewer than some minimum number of observations
+	\item Apply cost complexity pruning to the large tree in order to obtain a sequence of the best subtrees, as a function of $\alpha$
+	\item Use $K$-fold cross-validation to choose $\alpha$. That is, divide the training observations into $K$ folds. For each $k = 1, \ldots, K$: \begin{enumerate}
+		\item Repeat Steps 1 and 2 on a llbut the $k$th fold of the training data
+		\item Evaluate the mean squared prediction error on the data in the left-out $k$th fold, as a function of $\alpha$.
+	\end{enumerate}
+	Average the results for each value of $\alpha$, and pick $\alpha$ to minimize the average error
+	\item Return the subtree from Step 2 that corresponds to the chosen value of $\alpha$
+\end{enumerate}
+
+\tit{Large tree $T_0$ for the Baseball data}\\
+\textit{Figure 8.4}\\
+\tit{MSE plotted against tree size}\\
+\textit{Figure 8.5}
+
+\section{Lecture July 5th} 
+
+\tit{Classification Trees} 
+\begin{itemize}
+	\item Like regression tree, but for qualitative varibale
+	\item Main idea is the same 
+	\item Focus on binary variable (two classes) here
+	\item Different criteria for making binary splits: \begin{itemize}
+		\item Gini index \begin{align*}
+			G = 2 \hat{p}_m (1 - \hat{p}_m)
+		\end{align*}
+		where $m$ is the region (or bucket) of interest, and $\hat{p}_m$ is the fraction of ones
+		\item Idea: Good split (small $G$) contains only zeroes or ones
+		\item Alternatively: Cross-entropy, similar idea
+	\end{itemize}
+\end{itemize}
+
+\tit{Classification Tree: Heart Disease Data}\\
+\textit{Figure 8.6} 
+
+\tit{Criteria for making binary splits}
+\begin{itemize}
+	\item Theoretically: Aim to minimize missclassification rate \begin{align*}
+		E = 1 - \max(\hat{p}_m, 1 - \hat{p} - m)
+	\end{align*}
+	However, does not work well in practice
+	\item Smoother alternatives: \begin{itemize}
+		\item Gini index, \begin{align*}
+		G = 2 \hat{p}_, (1 - \hat{p} - m),
+		\end{align*}
+		where $m$ is the region (or bucket) of interest, and $\hat{p}_m$ is the fraction of ones
+		\item Cross-entropy \begin{align*}
+			D = -(\hat{p}_m \log(\hat{p}_m) + (1 - \hat{p}_m) \log(1 - \hat{p}_m))
+		\end{align*}
+	\end{itemize}
+	\item Idea: Ideal split (small $E$, $G$ or $D$) contains only zeros or ones
+\end{itemize}
+
+\tit{Trees: Pros} \begin{itemize}
+	\item Easy to explain
+	\item Mirror human decision making (?)
+	\item Easy to draw
+	\item Can easily handle qualitative predictors w/o dummies
+\end{itemize}
+
+\tit{Trees: Cons} \begin{itemize}
+	\item Prediction performance not great
+	\item Can be very non-robust (aka high variance)
+\end{itemize}
+
+\paragraph{Bagging, Random Forests, Boosting (8.2)} 
+
+\begin{itemize}
+	\item Until bow: Trees are nice, but too shaky to forecast well
+	\item Here: Ways to fix this problem
+	\item Will imporve prediction performance, at the cost of interpretation
+\end{itemize}
+
+\tit{Bagging regression trees}\\
+
+\underline{Want}: Prediction at a new (test sample) point $x$, say $\hat{f}(x)$\\
+If $\hat{f}(x)$ is produced by a single tree, then prediction tends to be shaky\\
+\id \rotatebox[origin=c]{180}{$\Lsh$} Idea: Compute $B$ predictions from $B$ different trees, and then take the average.\\
+\id $\rightsquigarrow$ Question: How to get 'different' trees?\\
+\id $\rightsquigarrow$ Answer: Take $B$ random samples from training data, and fit new tree each time\\
+Prediction then given by \begin{align*}
+	\hat{f}_{avg} (x) = \frac{1}{B} \sum_{b = 1}^B \hat{f}^b(x),
+\end{align*}
+where $\hat{f}^b$ is the tree obtained from the $b$-th sample.\\
+
+\tit{Bagging (from the slides)} 
+\begin{itemize}
+	\item Stats 1: If random variables $Z_1, \ldots, Z_n$ are indepedent and $V(Z_i) = \sigma^2$, then $\frac{1}{n} \sum\limits_{i = 1}^n Z_i$ has variance $\sigma^2/n$
+	\item Hence, averaging reduces variance
+	\item This intuition suggests to 'somehow' combine many trees to reduce variance
+	\item Ideally: Compute tree predictions $\hat{f}_{avg}(x), \ldots, \hat{f}^B(x)$ from $B$ different training data sets,then compute low-variance prediction \begin{align*}
+		\hat{f}_{avg}(x) = \frac{1}{B} \sum\limits_{b = 1}^B \hat{f}^b(x)
+	\end{align*}
+	\item In practice: Only a single training data set
+	\item Pragmatic alternative: Bagging (Bootstrap Aggregating) 
+	\item Bootstrap - What's that? 
+\end{itemize}
+
+\tit{Bootstrap: Recipe} 
+$ $\\
+
+For data set of size $n$: \begin{itemize}
+	\item Draw $n$ numbers (integers) between 1 and $n$, with replacement 
+	\item Get Bootstrap data set by selecting the rows (observations) drawn in the previous step
+	\item Produces synthetic data set, with some of the original observations appearing more than once, others not at all
+\end{itemize}
+
+\tit{Bootstrap: Illustration}\\
+
+\textit{Figure 5.11}\\
+
+\tit{Bagging: Recipe} \begin{itemize}
+	\item Create $B$ bootstrap resamples of the data
+	\item $\hat{f}^{*b}(x)$ = prediction for the $b$th sample
+	\item Bagging prediction given by \begin{align*}
+	\hat{f}_{bag}(x) = \frac{1}{B} \sum\limits_{b = 1}^B \hat{f}^{*b}(x)
+	\end{align*}
+	\item Simple and effective way to reduce variance of prediction
+\end{itemize}
+
+\tit{Bagging: Notes} \begin{itemize}
+	\item Can be applied to any procedure $\hat{f}$, but particularly useful for trees
+	\item Why? Trees are very shaky on their own
+	\item Recipe for bagging trees: \begin{itemize}
+		\item Each tree $b = 1, \ldots, B$ is grown very large \begin{itemize}
+			\item Hence low bias, high variance
+			\item No pruning, hence no choice for tuning parameter needed
+		\end{itemize}
+	\item Then average over $B$ trees to reduce variance
+	\item Prediction \begin{itemize}
+		\item Regression: See $\hat{f}_{bag}(x)$ above
+		\item Classification: Do majority vote among $B$ trees
+	\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\tit{Excercise 5.4/2}\\
+
+(a) Prob(1st bootstrap draw $\neq$ $j$th obs.) = 1 - Prob(1st bootstrap draw = $j$th obs.) = $\frac{n-1}{n}$\\
+(b) $\frac{n-1}{n}$\\
+(c) Prob($j$th obs. not in bootstrap sample)\\
+\id = Prob(1st bootstrap draw $\neq j$, 2nd bootstrap draw $\neq j, \ldots,$ $n$th bootstrap draw $\neq j$)\\
+\id = $(\frac{n-1}{n})^n = (1 - \frac{1}{n})^n$
+\id $\Rightarrow$ Prob(obs. j is in bootstrap sample) = $1 - (1 - \frac{1}{n})^n$\\
+For $n \to \infty$, $1 - (1 - \frac{1}{n})^n \to 0.632\ldots$\\
+
+\underline{Note}: Convergence is quite fast, so that approximations works well even for a 'small' $n \approx 50$\\
+$\rightsquigarrow$ Each observation has a chance of $\approx \frac{2}{3}$ of ending up in the bootstrap sample.\\
+
+\tit{Exercise 8.4/4}
+  \tikzset{
+	decision/.style={diamond, minimum height=10pt, minimum width=10pt, inner sep=1pt},
+	chance/.style={circle, minimum width=10pt, draw=blue, fill=none, thick, inner sep=0pt},
+}
+
+(a)  \hspace*{35mm}  (b)\\
+
+\begin{forest}
+	label L/.style={
+		edge label={node[midway,left,font=\scriptsize]{#1}}
+	},
+	label R/.style={
+		edge label={node[midway,right,font=\scriptsize]{#1}}
+	},
+	for tree={
+		child anchor=north,
+		for descendants={
+			{edge=->}
+		}
+	},
+	[$X_1< 1$, decision, draw
+	[$X_2 < 1$, decision, draw, label L=Yes,
+	[$X_1 < 0$, decision, draw, label L = Yes,
+	[3, rectangle, draw, label L= Yes] 
+	[$X_2 <0$, decision, draw, label R = No,
+	[10, rectangle, draw, label L = Yes]
+	[0, rectangle, draw, label R = No]
+	]
+	]
+	[15, rectangle, draw, label R=No]
+	]
+	[5, rectangle, draw, label R=No]
+	]
+\end{forest}
+\includegraphics[scale=0.55]{Graph19}
+
+\section{Lecture July 11th}
+
+Figure 8.8(book): Shows the impact of $B$ (\# of bagging draws) on test sample performance. \begin{itemize}
+	\item Bagging average $\hat{f}_{bag}(x) = \frac{1}{B} \sum\limits_{b = 1}^B \hat{f}^{*b}(x)$ can be seen as expected value of $\hat{f}^{*b}(x)$, where the expectation is taken with respect to 'bootstrap randomness' 
+	\item Typically find, that $\hat{f}_{bag}(x)$ (and thus its test sample performance) stabilize at some large value for $B$ $\rightsquigarrow$ Estimate of the expected value (see last point) does not improve much, if $B$ is further increased. 
+	\item  $B$ cannot be chosen too large (if computer time was irrelevant, we would always pick a very large value of $B$) 
+	\item In practice: Choose a value of $B$ that's feasible (regarding computer time) and leads to robust estimates.\\
+	$\rightsquigarrow$ e.g. plot $\hat{f}_{bag}(x)$ against $B$, and check if the estimate stabilizes.\\
+	$\rightsquigarrow$ If computations are fast enough, may be possible to simply choose a very large value of $B$, e.g. $B = 1000$ 
+\end{itemize}
+
+\tit{Out-of-Bag error estimation}\\
+
+How to estimate test error for bagging-based forecast? \begin{itemize}
+	\item Each bootstrap sample contains $\approx 2/3$ of the obs, $\approx 1/3$ not present
+	\item Consider predicting observation $i = 1$ \begin{itemize}
+		\item Select bagging iterations $b$ for which $i = 1$ is not used for model fitting (about $B/3$)
+		\item  Average their prediction for $i =1$, compare to true outcome
+	\end{itemize}
+	\item Repeat the above for $i = 1, \ldots, n$ \begin{itemize}
+		\item Valid estimate of test error (based on out-of-sample-predictions!)
+	\item Very similar (but much simpler than) CV for large $B$
+	\end{itemize}
+\end{itemize}
+
+\tit{Variable Importance Measures}\\
+\begin{itemize}
+	\item Bagging is harder to interpret than a single tree
+	\item Rough interpretation device: variable importance
+	\item Suppose we want to measure the importance of the variable 'years' in the Baseball data \begin{itemize}
+		\item For all $B$ trees, add the RSS reduction that are due  to splits in 'years'
+	\end{itemize}
+\item Similarily, add reductions in Gini measures in case of classification trees
+\end{itemize}
+
+\tit{Random forests}
+
+\begin{itemize}
+	\item Small tweak of bagged trees, aiming to decorrelate the $B$ trees
+	\item Each time a split is considered, select subset of $m$ predictors as split candidates \begin{itemize}
+		\item Fresh sample of $m$ predictors taken at each split
+		\item Popular choice is $m = \sqrt{p}$
+	\end{itemize}
+	\item Idea: Make $B$ trees less similar \begin{itemize}
+		\item E.g., consider data set with one dominant predictor
+		\item Bagging: Predictor present in most splits
+		\item  RFs: $(p-m)/p$ of the splits do no even consider the dominant predictor
+	\end{itemize}
+\end{itemize}
+
+Tuning parameter $m$ (\# of split candidates) \begin{itemize}
+	\item $m = p$ leads to bagged trees
+	\item $m = \sqrt{p}$ often used in practice
+	\item Small $m$ helpful with many correlated predictors
+	\item Example: Cancer prediction \begin{itemize}
+		\item $n = 349$ patients, qualitative outcome (health condition, 15 categories)
+		\item $p = 500$ predictors
+		\item Results on the next slide (slides Lecture 23) 
+	\end{itemize}
+\end{itemize}
+
+\tit{Boosting}\\
+
+\tit{Algorithm 8.2}\\
+\begin{enumerate}
+	\item Set $\hat{f}(x) = 0$ and $r_i = y_i$ for all $i$ in the training set
+	\item For $b = 1, 2, \ldots, B$, repeat: \begin{enumerate}
+		\item Fit a tree $\hat{f}^b$ with $d$ splits ($d+1$ terminal nodes) to the training data $(X,r)$\\
+		\item Update $\hat{f}$ by adding in a shrunken version of the new tree: \begin{align*}
+			\hat{f}(x) \leftarrow \hat{f}(x) + \lambda \hat{f}^b(x)
+		\end{align*}
+		\item Update the residuals, \begin{align*}
+			r_i \leftarrow r_i - \lambda \hat{f}^b(x_i)
+		\end{align*}
+	\end{enumerate}
+	\item Output the boosted model, \begin{align*}
+		\hat{f}(x) = \sum\limits_{b = 1}^B \lambda \hat{f}^b(x)
+	\end{align*}
+\end{enumerate}
+
+\tit{Boosting: Tuning Parameters}
+
+\begin{itemize}
+	\item Number of trees, $B$ \begin{itemize}
+		\item Unlike Bagging: Can overfit if $B$ too large
+		\item Unlike Bagging: Use CV to select $B$
+	\end{itemize}
+	\item Shrinkage parameter, $\lambda$ \begin{itemize}
+		\item Controls size of updates
+		\item Typical values are $\lambda = 0.01$ or $0.001$
+		\item If $\lambda$ ist too small, large $B$ is needed for good performance
+	\end{itemize}
+	\item Size of each individual tree, $d$ \begin{itemize}
+		\item Often $d = 1$ (single tree, i.e. 'stump') works well
+	\end{itemize}
+\end{itemize}
+
+\tit{Bagging vs. Boosting}\\
+
+$\begin{matrix}
+ 	\text{Bagging/RF} & \text{Boosting}\\
+ 	\hline
+ 	\text{Ensemble mehtod (combine $B$ trees)} & \text{Ensemble method (combine $B$ trees)}
+\end{matrix}$
+missing
+
+
+
+\end{document}
+
