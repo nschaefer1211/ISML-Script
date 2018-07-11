@@ -156,6 +156,13 @@
 	\vspace{0.125\baselineskip}
 	\tableofcontents %Inhaltsverzeichnis (wird automatisch erzeugt
 	\newpage
+	\begin{center}
+		\LARGE \textbf{Editor's Note}
+	\end{center}
+	This script is my personal transcript of the lecture ''Introduction to Statistical Machine Learning'' by Junprof. Dr. Fabian Krüger in the summer semester 2018. As it is my personal transcript, I cannot guarantee that it is mistakefree. If you find any mistakes (e.g. typos etc.) please feel free to edit them. Furthermore, I did not maintain the same format throughout the semester, and now I have too little time to edit everything. However, I think the document still has a somewhat clear structure. If you want to edit the format a little, color or bold some words or sentences to make it more readable and highlight the important stuff, again please feel free to do that.\\
+	Lastly I hope that it is of some use to the course. Enjoy and study hard!\\
+	Niko
+	\newpage
 	\section{Lecture April 18th}
 	\vspace{0.2\baselineskip}
 	
@@ -329,7 +336,7 @@ Try to learn the form of $f$ from the training data.\\
 
 \tit{Question:} Why not always choose the most flexible model that's available? (see section 2.1.3)
 \underline{Inference:} Some of the very flexible models (e.g. Bagging) are hard to interpret, i.e. reveal little about the structure of the data. This leads to a trade-off between a model's flexibility and interpretability (see Figure 2.7)\\
-
+\newpage
 \underline{Subset selection lasso:} Take small set of variables from a large linear model\\
 not very flexible but very interpretable\\
 \rotatebox[origin=c]{180}{$\Lsh$} results are easy to interpret, because they choose the relevant variables from the data set.\\
@@ -462,7 +469,7 @@ Some efforts to drop seasonal (but not flu-related) terms like college basketbal
 Lazer et al, Figure 2: GFT prediction clearly and consistently overpredicts the CDC data.\\
 Most likely explanation: Changes in the search engine algorithm, which led to increase in the $Q_t$ variable, which had no substantive reason.\\
 $\rightsquigarrow$ Quite complex, result of both search engine technology and user behavior.\\
-
+\newpage
 \tit{Criticism by Lazer et al (2014):} 
 \begin{itemize}[label={--}]
 	\item GFT performance not too great to begin with
@@ -489,7 +496,7 @@ Sketch:
 $\rightsquigarrow$ This pattern can be explained by two competing properties of statistical learning methods: Bias and variance.
 \begin{align*}
 	E \{(y_0 - \hat{f}(x_0))^2\} = E\{(f(x_0) + \epsilon - \hat{f}(x_0))^2\} = E \{(f(x_0) - E(\hat{f}(x_0)) + E(\hat{f}(x_0)) + \epsilon - \hat{f}(x_0))^2\} \hspace*{17mm}\\ 
-	= E(\epsilon^2) + E\{(f(x_0) - E(\hat{f}(x_0)) + E(\hat{f}(x_0)) - \hat{f}(x_0))^2\} \hspace*{78.3mm}\\
+	= E(\epsilon^2) + E\{(f(x_0) - E(\hat{f}(x_0)) + E(\hat{f}(x_0)) - \hat{f}(x_0))^2\} \hspace*{82mm}\\
 	 = \underbrace{E(\epsilon^2)}_{A} + \underbrace{E\{(f(x_0) - E(\hat{f}(x_0)))^2\}}_{B} + \underbrace{E\{(E(\hat{f}(x_0) - \hat{f}(x_0)))^2\}}_{C}  + \underbrace{2E\{(f(x_0) - E(\hat{f}(x_0))) (E(\hat{f}(x_0)) - \hat{f}(x_0))\}}_{D}
 \end{align*}
 $\epsilon$ is part of the test sample $\Leftrightarrow$ independent of $\hat{f}(x_0)$ (part of the training sample)\\
@@ -517,7 +524,7 @@ $\rightsquigarrow$ in general, flexible methods tend to have higher variance. \\
 	\item Challenge is to choose the optimal compromise that minimizes test MSE
 \end{itemize}
 $\rightsquigarrow$ This challenge is called the bias-variance trade-off. 
-
+\newpage
 \paragraph{The classification setting (2.2.3)}
 $ $\\
 
@@ -572,7 +579,7 @@ BC produces the lowest possible error rate ('Bayes error rate'), given by \begin
 	1 - E\left(\max\limits_{j} P(Y = j|X)\right),
 \end{align*}
 this corresponds to the irreducible error in regression.\\
-
+\newpage
 \textbf{\tit{$K$-Nearest Neighbors}}\\
 
 Problem with the BC: Depends on the unknown true probability. $\rightsquigarrow$ Need to estimate it from training data. One approach for doing this:\\
@@ -703,7 +710,7 @@ Which factors affect accuracy of OLS estimator?\\
 \id \id \rotatebox[origin=c]{180}{$\Lsh$} Ideally, want $Var(\hat{\beta}_0)$ and $Var(\hat{\beta}_1)$ to be small.\\
 This is the case if, \begin{itemize}
 	\item The sample size, $n$, is large
-	\item The error variance (of $\epsilon$), $\sigma^2$, is 
+	\item The error variance (of $\epsilon$), $\sigma^2$, is small 
 	\item The variance of $X_i$, $Var(X_i)$, is large
 \end{itemize}
 $\rightsquigarrow$ \underline{Note:} RSS is minimized by construction, hence not a good measure of test sample performance.\\
@@ -736,7 +743,7 @@ OLS estimation: \begin{align*}
 
 \tit{Note:} Variable may be important in simple linear regression (1 predictor) but may drop out/be irrelevant in multiple regression.\\
 E.g.: In regression of $Y$ on $X_6$ only, might find strong positive relation (but might vanish in multiple regression)\\
-
+\newpage
 \tit{Model fit} (i.e. how well a model matches  the data)\\
 Most popular measure: $R^2$, given by \begin{align*}
 	R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}, \id \text{TSS} = \sum\limits_{i = 1}^n (Y_i - \overline{Y})^2
@@ -782,7 +789,7 @@ Ways to quantify prediction uncertainty \begin{enumerate}
 	\item As $n \rightarrow \infty$, CI shrinks to true value $f(X)$ (i.e. CI has lenght zero, no estimation uncertainty left). 
 	\item As $n \rightarrow \infty$, PI only covers uncertainty about $\epsilon$ (does not collapse to a length zero), there can still be a lot of uncertainty left) 
 \end{itemize}
-
+\newpage
 \paragraph{Other considerations in the linear regression model (3.3)}
 
 \paragraph{Qualitative predictors (3.3.1)}
@@ -818,7 +825,7 @@ E.g. \begin{align*}
 \underline{Charity example}:\\
 \id $\beta_0 =$ Mean contribution of employed persons\\
 \id $\beta_1 =$ Difference in (mean) contribution for unemployed vs. employed persons\\
-
+\newpage
 \tit{Note}: \begin{itemize}
 	\item Coding of $X_i$ is arbitrary: Could also set $X_i$ to 1 for employed persons\\
 	\id \rotatebox[origin=c]{180}{$\Lsh$} Interpretation of parameters would change\\
@@ -900,7 +907,7 @@ Possible fixes: Define age categories, i.e. qualitative variable \begin{align*}
 	\item Non-differentiable
 	\item Uses no information from 'neighboring' age groups (e.g., coefficient for group 54-60 uses no information from people aged 48-54)
 \end{enumerate}
-
+\newpage
 \tit{Better alternatives}: 
 
 \begin{enumerate}
@@ -1015,7 +1022,7 @@ E.g. if we find, that $\beta_1 > 0$, that implies positive association between $
 $\rightsquigarrow$ can interpret sign of $\beta_1$!\\
 \tit{Note:}\\
 $\frac{\dif p(x)}{\dif x}$ (size of effect of $X$) depends on $X$ $\rightsquigarrow$ Different for each observation in sample. $\rightsquigarrow$ can not easily interpret size of $\beta_1$!\\
-
+\newpage
 \paragraph{Estimating the regression coefficients (4.3.2)}
 $ $\\
 
@@ -1120,7 +1127,7 @@ $\rightsquigarrow$ Can estimate $P_K(x) \equiv Pr(Y = K|X = x)$ by inserting est
 	\item Estimating the densities $\{f_l(x)\}$ is more challenging, but can be simplified with adding assumptions
 \end{itemize}
 $\Rightarrow$ Next: Discuss approaches for estimating the terms in (\ref*{Eq. 4}), with the aim to approximate the Bayes classifier.\\
-
+\newpage
 \paragraph{Linear discriminant analysis for $p = 1$ (4.4.2)}
 $ $\\
 
@@ -1187,7 +1194,7 @@ Density $f_k(x)$ assumed to be multivariate normal, i.e. \begin{align*}
 	f_k(x) = \frac{1}{(2p)^{p/2} |\Sigma|^{1/2}} \exp(-0.5(x - \mu_k)^T \Sigma^{-1} (x - \mu_k))
 \end{align*}
 Note: Covariance matrix $\Sigma$ is the same for all $k$! 
-
+\newpage
 \tit{Background: Multivariate normal} \begin{itemize}
 	\item Mean vector $\mu$ gives mean for each element of $X = (X_1, \ldots, X_p)^T$
 	\item Covariance matrix $\Sigma$ gives (co-)variances of $X$, with \begin{align*}
@@ -1300,7 +1307,7 @@ True positive rate = $\frac{\# \{\text{Prediction = Yes, Outcome = Yes}\}}{\# \{
 A: Always predict 'No' $\rightsquigarrow$ no false positives, no true positives\\
 B: Always predict 'Yes' $\rightsquigarrow$ FP rate = TP rate = 1\\
 $\rightsquigarrow$ Good predictor attains good tradeoff $\rightsquigarrow$ Area between ROC curve and $45^{\circ}$-line is large\\
-
+\newpage
 \underline{Note:} \begin{itemize}
 	\item Statistical model (like LDA or logistic regression) gives a set of probabilities $\{p_i\}_{i \in I}$, $I = \{1, \ldots, n\}$, where \begin{align*}
 		\hat{p}_i = (\text{$\widehat{Prob}$ obs. $i$ = Yes})
@@ -1382,7 +1389,7 @@ Note that LOOCV (Leave-One-Out-Cross-Validation) is a special case of $K$-fold C
 	\item Do the same for the fancy method, get $CV_{(K)}^{FM}$\\
 	$\rightsquigarrow$ Choose method with better (=lower) $CV_{(K)}$ estimate. 
 \end{itemize}
-
+\newpage
 \paragraph{Bias-Variance Trade-Off for $K$-fold Cross-Validation (5.1.4)}
 $ $\\
 \begin{itemize}
@@ -1427,7 +1434,7 @@ Until now: Fitted Equation (\ref*{Eq. 8}) with OLS. This chapter: Look at fittin
 $ $\\
 
 Idea: Find the best subgroup of all $p$ possible vectors.\\ 
-
+\newpage
 \tit{Algorithm 6.1(from the book): Best Subset Selection} \begin{enumerate}
 	\item Let $M_0$ = null model (no predictors, i.e. $\hat{Y} = \overline{Y}$ (training sample average))
 	\item For $K = 1, 2, \ldots, P$\\
@@ -1466,7 +1473,7 @@ $\rightsquigarrow$ One fix: Forward step-wise selection\\
 
 Alternative Strategy to deal with many predictors (i.e., large $p$):\\
 Shrinking the coefficients towards zero $\rightsquigarrow$ We'll look at two shrinkage methods, Ridge Regression and Lasso.\\
-
+\newpage
 \paragraph{Ridge Regression (6.2.1)}
 $ $\\
 
@@ -1489,7 +1496,7 @@ The term $\lambda \sum\limits_{j = 1}^p \beta_j^2$ is  called a shrinkage penalt
 	$\rightsquigarrow$ makes sense for prediction, but not for interpretation
 	\item Good choice of $\lambda$ is crucial, can be done using CV
 \end{itemize}
-
+\newpage
 \tit{Implementation}: 
 \begin{itemize}
 	\item SP does not affect the intercept, $\beta_0$\\
@@ -1563,7 +1570,7 @@ Best Subset Selection (BSS) can also be written as a 'budget' problem: It solves
 In words: BSS chooses best model with at most $s$ nonzero coefficients.\\
 $\rightsquigarrow$ As noted, earlier, BSS is tedious since it entails $\binom{p}{s}$ estimation problems.\\
 $\rightsquigarrow$ Lasso/Ridge are feasible alternatives to BSS.\\
-
+\newpage
 \tit{Comparing Ridge and Lasso} \begin{itemize}
 	\item Lasso is easier to interpret than Ridge\\
 	\rotatebox[origin=c]{180}{$\Lsh$} can look at set of 'selected' variables
@@ -1591,7 +1598,7 @@ $\rightsquigarrow$ Figure illustrates that the Lasso budget is more likely to yi
 		\item Statistical ways to increase $p$ (interactions, polynomials)
 	\end{itemize}
 \end{itemize}
-
+\newpage
 \paragraph{What goes wrong in high dimensions? (6.4.2)} 
 $ $\\ 
 
@@ -1672,7 +1679,7 @@ $ $\\
 		\item Prediction is the same for all observations that fall into a region $R_j$: Mean response for all observations in $R_j$
 	\end{itemize}
 \end{itemize}
-
+\newpage
 \tit{RSS of tree}: \begin{align*}
 	\sum\limits_{j = 1}^J \underbrace{\sum\limits_{i: x_i \in R_j} (y_i - \hat{y}_{R_j})^2}_{ = \text{ RSS within leaf } R_j}, 
 \end{align*}
@@ -1704,6 +1711,7 @@ $|R_j|$ = number of observations within leaf $R_j$
 \end{itemize}
 
 Splitting always reduces RSS\\
+\newpage
 (very) simple example: Only one predictor ($p = 1$), two observations ($n = 2$)
 \begin{center}
 	$\begin{matrix}
@@ -1725,8 +1733,8 @@ Example shows that splitting always reduces RSS, up to a (crazy) limiting case w
 	\includegraphics[scale=0.55]{Graph18}
 \end{align*}
 Idea: Want to have buckets that separate 'zeros' from 'ones' (i.e. sharp prediction)
-
-\tit{Finding the optimal tree size}\\
+\newpage
+\tit{Finding the optimal tree size}
 
 \begin{itemize}
 	\item Size $|T|$ of a tree $T$ can be measured by the number of terminal nodes (three in simple example above)
@@ -1823,7 +1831,7 @@ Prediction then given by \begin{align*}
 	\hat{f}_{avg} (x) = \frac{1}{B} \sum_{b = 1}^B \hat{f}^b(x),
 \end{align*}
 where $\hat{f}^b$ is the tree obtained from the $b$-th sample.\\
-
+\newpage
 \tit{Bagging (from the slides)} 
 \begin{itemize}
 	\item Stats 1: If random variables $Z_1, \ldots, Z_n$ are indepedent and $V(Z_i) = \sigma^2$, then $\frac{1}{n} \sum\limits_{i = 1}^n Z_i$ has variance $\sigma^2/n$
@@ -1849,7 +1857,7 @@ For data set of size $n$: \begin{itemize}
 \tit{Bootstrap: Illustration}\\
 
 \textit{Figure 5.11}\\
-
+\newpage
 \tit{Bagging: Recipe} \begin{itemize}
 	\item Create $B$ bootstrap resamples of the data
 	\item $\hat{f}^{*b}(x)$ = prediction for the $b$th sample
@@ -1949,7 +1957,7 @@ How to estimate test error for bagging-based forecast? \begin{itemize}
 	\item Very similar (but much simpler than) CV for large $B$
 	\end{itemize}
 \end{itemize}
-
+\newpage
 \tit{Variable Importance Measures}\\
 \begin{itemize}
 	\item Bagging is harder to interpret than a single tree
