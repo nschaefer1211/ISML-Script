@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2017.10.27)  11 JUL 2018 20:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2017.10.27)  12 JUL 2018 19:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -3851,12 +3851,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 1961--1963
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1997--1998
+Underfull \hbox (badness 10000) in paragraph at lines 1970--1971
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1999--2001
+Underfull \hbox (badness 10000) in paragraph at lines 1998--1999
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2000--2002
 
  []
 
@@ -3869,42 +3874,42 @@ Package babel Info: Redefining ngerman shorthand "|
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 2002.
 [71]
-Underfull \hbox (badness 10000) in paragraph at lines 2003--2004
+Underfull \hbox (badness 10000) in paragraph at lines 2004--2005
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2033--2034
+Underfull \hbox (badness 10000) in paragraph at lines 2034--2035
 
  []
 
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2048.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2048.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2048.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2048.
 [72]
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2056.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2056.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2056.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 2044.
+(babel)             in language  on input line 2056.
  [73]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2044.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2044.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2056.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2056.
  (./VL.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2044.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2044.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2056.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2056.
 
 Package rerunfilecheck Info: File `VL.out' has not changed.
 (rerunfilecheck)             Checksum: B516CE443EF5DACBE679BCBCAC7B0DD6;1052.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2044.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2056.
  )
 (\end occurred inside a group at level 1)
 
@@ -3931,7 +3936,7 @@ exlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2017/texmf-d
 ist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/ur
 w/times/utmr8a.pfb><c:/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on VL.pdf (73 pages, 1968686 bytes).
+Output written on VL.pdf (73 pages, 1969179 bytes).
 PDF statistics:
  610 PDF objects out of 1000 (max. 8388607)
  498 compressed objects within 5 object streams

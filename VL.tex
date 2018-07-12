@@ -1967,6 +1967,7 @@ How to estimate test error for bagging-based forecast? \begin{itemize}
 	\end{itemize}
 \item Similarily, add reductions in Gini measures in case of classification trees
 \end{itemize}
+\textit{Figure 8.9}\\
 
 \tit{Random forests}
 
@@ -1990,7 +1991,7 @@ Tuning parameter $m$ (\# of split candidates) \begin{itemize}
 	\item Example: Cancer prediction \begin{itemize}
 		\item $n = 349$ patients, qualitative outcome (health condition, 15 categories)
 		\item $p = 500$ predictors
-		\item Results on the next slide (slides Lecture 23) 
+		\item Results on the next slide (slides Lecture 23 (slide 12), Figure 8.10)  
 	\end{itemize}
 \end{itemize}
 
@@ -2032,12 +2033,23 @@ Tuning parameter $m$ (\# of split candidates) \begin{itemize}
 
 \tit{Bagging vs. Boosting}\\
 
-$\begin{matrix}
- 	\text{Bagging/RF} & \text{Boosting}\\
- 	\hline
- 	\text{Ensemble mehtod (combine $B$ trees)} & \text{Ensemble method (combine $B$ trees)}
-\end{matrix}$
-missing
+\setlength\arraycolsep{25pt}
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+	$\begin{matrix}
+	\text{Bagging/RF} & \text{Boosting}\\
+	\hline
+	\text{Ensemble method (combine $B$ trees)} & \text{Ensemble method (combine $B$ trees)}\\
+	\text{Individual trees are large} & \text{Individual trees are small}\\
+	\text{Trees independent (Bootstrap)} & \text{Trees dependent (grown sequentially)}\\
+	\text{Tuning parameter $m$ (RF only)} & \text{Tuning parameters $B$, $\lambda$, $p$}\\
+	\text{No overfitting if $B$ is large} & \text{Overfitting if $B$ is large} 
+	\end{matrix}$
+\end{center}
+
+
+\textit{Cancer Data: Figure 8.11}
+
 
 
 
